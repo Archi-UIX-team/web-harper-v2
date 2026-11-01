@@ -1,0 +1,85 @@
+/* React Bits FlexCarousel within Harper's existing Moments art direction. */
+.harper-grey-sequence .harper-reels{
+  padding:clamp(64px,6vw,100px) 0 clamp(72px,7vw,112px);
+  overflow:hidden;
+}
+.harper-reels .reels-stage{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:clamp(24px,3vw,42px);
+  width:100%;
+  max-width:none;
+  height:auto;
+  min-height:0;
+  max-height:none;
+  overflow:visible;
+  transform:none;
+}
+.harper-reels .reels-stage::before,.harper-reels .reels-stage::after,
+.harper-reels .reels-orbit::before{display:none!important;content:none!important}
+.harper-reels .reels-center{
+  position:relative;
+  inset:auto;
+  order:0;
+  width:min(100% - 32px,900px);
+  margin:0;
+  padding:0 16px;
+  transform:none!important;
+  pointer-events:auto;
+}
+.harper-reels .reels-center h2{margin:0;font-size:clamp(35px,3.5vw,55px);line-height:1.05}
+.harper-reels .reels-social{margin-top:15px}
+.harper-reels .reels-orbit{
+  position:relative;
+  inset:auto;
+  order:1;
+  width:100%;
+  height:clamp(520px,40vw,650px);
+  margin:0;
+  padding:0;
+  overflow:hidden;
+  transform:none!important;
+  isolation:isolate;
+  cursor:auto;
+}
+.harper-reels .flex-carousel{height:100%;outline-offset:-4px}
+.harper-reels .flex-carousel:focus-visible{box-shadow:inset 0 0 0 2px var(--orange)}
+.harper-reels .flex-carousel__caption{
+  top:auto;
+  bottom:12px;
+  gap:8px;
+  color:#fff8ef;
+  font-family:var(--sans);
+  text-shadow:0 2px 6px #2424248c;
+}
+.harper-reels .flex-carousel__title{
+  display:-webkit-box;
+  max-width:min(400px,80vw);
+  overflow:hidden;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:1;
+  font-size:14px;
+  font-weight:700;
+  line-height:1.4;
+}
+.harper-reels .flex-carousel__subtitle{display:none}
+.harper-reels .flex-carousel__count{font-size:13px;opacity:.8}
+.harper-reels .reels-empty{position:relative;display:block;margin:auto;text-align:center}
+.harper-reels .reels-empty[hidden]{display:none}
+.harper-reels .reels-flex-fallback{display:flex;gap:14px;width:100%;padding:24px;overflow-x:auto;scroll-snap-type:x mandatory}
+.harper-reels .reels-flex-fallback a{flex:none;width:clamp(190px,22vw,255px);aspect-ratio:9/16;scroll-snap-align:center}
+.harper-reels .reels-flex-fallback img{display:block;width:100%;height:100%;object-fit:cover}
+@media(max-width:700px){
+  .harper-grey-sequence .harper-reels{padding:58px 0 78px}
+  .harper-reels .reels-stage{gap:20px}
+  .harper-reels .reels-center{width:100%;padding:0 18px}
+  .harper-reels .reels-center h2{font-size:clamp(29px,8vw,39px)}
+  .harper-reels .reels-orbit{height:clamp(440px,126vw,560px)}
+  .harper-reels .flex-carousel__caption{bottom:5px}
+  .harper-reels .flex-carousel__title{max-width:76vw;font-size:12px}
+}
+@media(prefers-reduced-motion:reduce){
+  .harper-reels .flex-carousel__caption,.harper-reels .flex-carousel__title{animation:none}
+}
