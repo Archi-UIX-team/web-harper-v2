@@ -844,7 +844,7 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
 .hero-contour .hero-paper{position:absolute;inset:0;background:url('./assets/hero-white-stone.svg') center top/1000px 750px repeat;opacity:.22;mix-blend-mode:multiply;mask-image:linear-gradient(#000 0%,#000 52%,rgb(0 0 0 / 35%) 80%,transparent 100%);pointer-events:none}
 @media(max-width:700px){.hero-contour .hero-paper{background-size:720px 540px;opacity:.18}}
 
-/* Window sunlight at the top-right; stone backing travels with the active photo. */
+/* Window sunlight at the top-right. */
 .hero-contour .hero-atmosphere::after{
   display:block;content:"";position:absolute;
   inset:-42px -92px auto auto;width:480px;height:390px;
@@ -858,15 +858,27 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
   pointer-events:none;
 }
 .hero-contour .rustic-orbit::before{display:none}
-.hero-contour .rustic-orbit button.rustic-orbit__card.is-featured::before{
-  content:"";position:absolute;z-index:-1;
-  inset:0 -5px -5px 0;
-  background:#595959 url('./assets/harper-pattern.webp') center/cover;
-  transform:translate(5px,5px);
-  box-shadow:0 6px 13px #423b3540;
-  pointer-events:none;
-}
 @media(max-width:700px){
   .hero-contour .hero-atmosphere::after{top:-25px;right:-175px;width:330px;height:285px;opacity:.10;filter:blur(10px)}
-  .hero-contour .rustic-orbit button.rustic-orbit__card.is-featured::before{inset:0 -4px -4px 0;transform:translate(4px,4px)}
+}
+
+/* The featured room uses a padded, rounded stone ring that travels with the card. */
+.hero-contour .rustic-orbit button.rustic-orbit__card,
+.hero-contour .rustic-orbit button.rustic-orbit__card.is-featured{
+  padding:6px!important;
+  border:0!important;
+  border-radius:10px!important;
+  box-sizing:border-box;
+  background:#fffaf2!important;
+}
+.hero-contour .rustic-orbit button.rustic-orbit__card.is-featured{
+  background:#747474 url('./assets/harper-pattern.webp') center/420px auto repeat!important;
+}
+.hero-contour .rustic-orbit__card img{border-radius:4px!important}
+.hero-contour .rustic-orbit__caption{inset:auto 6px 6px;border-radius:0 0 4px 4px!important}
+@media(max-width:700px){
+  .hero-contour .rustic-orbit button.rustic-orbit__card,
+  .hero-contour .rustic-orbit button.rustic-orbit__card.is-featured{padding:5px!important}
+  .hero-contour .rustic-orbit__card img{border-radius:5px!important}
+  .hero-contour .rustic-orbit__caption{inset:auto 5px 5px;border-radius:0 0 5px 5px!important}
 }

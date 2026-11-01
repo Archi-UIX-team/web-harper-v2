@@ -25,8 +25,11 @@ function RusticOrbit() {
 
   useLayoutEffect(() => {
     let phase = 1, move = null, frame, previous = 0, idle = 0;
+    let introState = matchMedia('(prefers-reduced-motion: reduce)').matches ? 'done' : 'waiting';
+    let introRequested = false, introStart = 0, introElapsed = 0;
     const motion = matchMedia('(prefers-reduced-motion: reduce)');
-    const paint = () => {
+    const paint = (now = performance.now()) => {
+      const introAge = now - introStart;
       const width = orbitRef.current.clientWidth, mobile = window.innerWidth < 701;
       const mainWidth = Math.min(width * (mobile ? .78 : .408), mobile ? 420 : 636);
       const mainHeight = mobile ? Math.min(320, mainWidth * .96) : Math.min(322, window.innerHeight * .345, mainWidth * .505);
@@ -35,6 +38,9 @@ function RusticOrbit() {
       cardRefs.current.forEach((card, index) => {
         let offset = mod(index - phase + rooms.length / 2, rooms.length) - rooms.length / 2;
         const depth = Math.abs(offset), visible = depth < 2.5;
+        const delay = Math.round(depth) * 80;
+        const t = introState === 'done' ? 1 : introState === 'waiting' ? 0 : Math.max(0, Math.min(1, (introAge - delay) / 650));
+        const reveal = 1 - (1 - t) ** 3;
         // Interpolate between five fixed, vertically centered layers.
         const slots = mobile ? [0, .50, .76, 1.05] : [0, .235, .39, .64];
         const sizes = [1, .75, .54, .44];
@@ -43,8 +49,8 @@ function RusticOrbit() {
         const x = Math.sign(offset) * width * mix(slots[slot], slots[slot + 1], fraction);
         card.style.width = `${mainWidth}px`;
         card.style.height = `${mainHeight}px`;
-        card.style.transform = `translate(-50%,-50%) translate(${x}px,${mobile ? 0 : -depth * 10}px) scale(${scale})`;
-        card.style.opacity = '1';
+        card.style.transform = `translate(-50%,-50%) translate(${x * reveal}px,${(mobile ? 0 : -depth * 10) + (1 - reveal) * 12}px) scale(${scale})`;
+        card.style.opacity = String(reveal);
         card.style.visibility = visible ? 'visible' : 'hidden';
         card.style.zIndex = String(30 - Math.round(depth * 5));
         card.style.pointerEvents = visible ? 'auto' : 'none';
@@ -62,8 +68,19 @@ function RusticOrbit() {
       if (motion.matches) { phase = target; paint(); return; }
       move = {from:phase,to:target,elapsed:0};
     };
+    const finishIntro = () => {
+      if (introState === 'done') return;
+      introState = 'done';
+      paint();
+      window.dispatchEvent(new Event('harper:hero-orbit-complete'));
+    };
+    const startIntro = () => {
+      introRequested = true;
+      if (introState !== 'waiting' || paused.current.offscreen) return;
+      introState = 'running'; introStart = performance.now(); introElapsed = 0;
+    };
     controller.current = {
-      finishIntro() {},
+      finishIntro,
       step(delta) { moveTo(Math.round(phase) + delta); },
       select(index) {
         let difference = mod(index - mod(Math.round(phase), rooms.length), rooms.length);
@@ -71,30 +88,34 @@ function RusticOrbit() {
         moveTo(Math.round(phase)+difference);
       }
     };
-    const observer = new IntersectionObserver(entries => { paused.current.offscreen = !entries[0].isIntersecting; });
+    const observer = new IntersectionObserver(entries => { paused.current.offscreen = !entries[0].isIntersecting; if (introRequested && !paused.current.offscreen) startIntro(); });
     observer.observe(orbitRef.current);
     const tick = now => {
       const dt = previous ? Math.min(now - previous, 50) : 0; previous = now;
       const frozen = document.hidden || paused.current.offscreen || paused.current.touch;
-      if(move && !frozen) {
+      if(introState === 'running' && !frozen) {
+        introElapsed += dt;
+        paint(introStart + introElapsed);
+        if (introElapsed >= 810) finishIntro();
+      } else if(move && !frozen) {
         move.elapsed += dt;
         const t = Math.min(1, move.elapsed / 500), eased = t*t*(3-2*t);
         phase = mix(move.from,move.to,eased); paint();
         if(t === 1) {move=null;idle=0;}
-      } else if(!move && !motion.matches && !frozen && !Object.values(paused.current).some(Boolean)) {
+      } else if(introState === 'done' && !move && !motion.matches && !frozen && !Object.values(paused.current).some(Boolean)) {
         idle += dt;
         if(idle >= 4000) moveTo(Math.round(phase)+1);
       }
       frame=requestAnimationFrame(tick);
     };
-    const onMotion = () => { if(motion.matches && move) {phase=move.to;move=null;paint();} idle=0; };
+    const onMotion = () => { if(motion.matches) { if(move) {phase=move.to;move=null;} finishIntro(); paint(); } idle=0; };
+    window.addEventListener('harper:hero-orbit-start', startIntro);
+    window.addEventListener('resize',paint);
+    motion.addEventListener('change',onMotion);
     paint(); frame=requestAnimationFrame(tick);
     window.__harperOrbitReady = true;
     window.dispatchEvent(new Event('harper:hero-orbit-ready'));
-    window.dispatchEvent(new Event('harper:hero-orbit-complete'));
-    window.addEventListener('resize',paint);
-    motion.addEventListener('change',onMotion);
-    return () => {cancelAnimationFrame(frame);observer.disconnect();clearTimeout(clickReset.current);window.removeEventListener('resize',paint);motion.removeEventListener('change',onMotion);controller.current=null;};
+    return () => {cancelAnimationFrame(frame);observer.disconnect();clearTimeout(clickReset.current);window.removeEventListener('resize',paint);window.removeEventListener('harper:hero-orbit-start',startIntro);motion.removeEventListener('change',onMotion);controller.current=null;};
   }, []);
 
   return (
