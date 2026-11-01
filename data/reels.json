@@ -1,58 +1,56 @@
 {
   "source": "https://www.instagram.com/favehotels/reels/",
   "profiles": {
-    "instagram": "https://www.instagram.com/harperhotels/reels/",
+    "instagram": "https://www.instagram.com/favehotels/reels/",
     "facebook": "https://www.facebook.com/HARPERHotels",
     "x": "https://twitter.com/harperhotels"
   },
   "items": [
     {
-      "url": "https://www.instagram.com/reel/DettYzjhQdQ/",
-      "thumbnail": "./assets/reels/DettYzjhQdQ.jpg",
-      "alt": "60s to Tokyo mixed berry and basil drink \u2014 original favehotels Reel cover",
-      "video": "./assets/reels/DettYzjhQdQ.mp4"
+      "url": "https://www.instagram.com/favehotels/reels/",
+      "cover": "./assets/moment-4.png",
+      "alt": "Harper editorial cover showing a guest enjoying a quiet moment"
     },
     {
-      "url": "https://www.instagram.com/reel/DeeKFpoSKX7/",
-      "thumbnail": "./assets/reels/DeeKFpoSKX7.jpg",
-      "alt": "Archipelago Black Box Battle Young Barista 2026 \u2014 original favehotels Reel cover",
-      "video": "./assets/reels/DeeKFpoSKX7.mp4"
+      "url": "https://www.instagram.com/favehotels/reels/",
+      "cover": "./assets/moment-5.png",
+      "alt": "Harper editorial cover showing a warm welcome from hotel staff"
     },
     {
-      "url": "https://www.instagram.com/reel/DebyfNCyBvp/",
-      "thumbnail": "./assets/reels/DebyfNCyBvp.jpg",
-      "alt": "Archipelago Black Box Battle Young Pastry 2026 \u2014 original favehotels Reel cover",
-      "video": "./assets/reels/DebyfNCyBvp.mp4"
+      "url": "https://www.instagram.com/favehotels/reels/",
+      "preview": true,
+      "cover": "./assets/moment-1.png",
+      "alt": "Harper hotel guest reading in a room"
     },
     {
-      "url": "https://www.instagram.com/reel/DelaylrBZLG/",
-      "thumbnail": "./assets/reels/DelaylrBZLG.jpg",
-      "video": "./assets/reels/DelaylrBZLG.mp4",
-      "alt": "favebanyumanik: \"Almost time to check in !"
+      "url": "https://www.instagram.com/favehotels/reels/",
+      "preview": true,
+      "cover": "./assets/orbit-breakfast.webp",
+      "alt": "Breakfast by a hotel window"
     },
     {
-      "url": "https://www.instagram.com/reel/DeOcStuot0j/",
-      "thumbnail": "./assets/reels/DeOcStuot0j.jpg",
-      "video": "./assets/reels/DeOcStuot0j.mp4",
-      "alt": "fave_hotellampung: Enjoy 20% off your room stay and 30% off Food & Beverage, up to IDR 500,000."
+      "url": "https://www.instagram.com/favehotels/reels/",
+      "preview": true,
+      "cover": "./assets/moment-3.png",
+      "alt": "Guests enjoying a playful moment in a hotel room"
     },
     {
-      "url": "https://www.instagram.com/reel/DdyJr6Lx2TW/",
-      "thumbnail": "./assets/reels/DdyJr6Lx2TW.jpg",
-      "video": "./assets/reels/DdyJr6Lx2TW.mp4",
-      "alt": "fave_hotellampung: \ud83d\udccdFave+ Hotel Lampung"
+      "url": "https://www.instagram.com/favehotels/reels/",
+      "preview": true,
+      "cover": "./assets/orbit-dining.webp",
+      "alt": "Dinner served in a warmly lit hotel restaurant"
     },
     {
-      "url": "https://www.instagram.com/reel/DdsaG2uo6e8/",
-      "thumbnail": "./assets/reels/DdsaG2uo6e8.jpg",
-      "video": "./assets/reels/DdsaG2uo6e8.mp4",
-      "alt": "fave_hotellampung: \ud83d\udd25 BBQ NIGHT IS ON! \ud83d\udd25"
+      "url": "https://www.instagram.com/favehotels/reels/",
+      "preview": true,
+      "cover": "./assets/moment-2.png",
+      "alt": "Guest enjoying a meal at a Harper hotel"
     },
     {
-      "url": "https://www.instagram.com/reel/DcP9f-BRhef/",
-      "thumbnail": "./assets/reels/DcP9f-BRhef.jpg",
-      "video": "./assets/reels/DcP9f-BRhef.mp4",
-      "alt": "fave_hotellampung: Hotel tercanggih di Bandar Lampung 2026 \ud83d\ude07"
+      "url": "https://www.instagram.com/favehotels/reels/",
+      "preview": true,
+      "cover": "./assets/orbit-welcome.webp",
+      "alt": "Flowers and a welcoming hotel lounge"
     }
   ]
 }
