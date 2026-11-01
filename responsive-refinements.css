@@ -839,7 +839,7 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
 .hero-contour .rustic-orbit__card.is-left-preview:not(.is-featured)::after{left:14px!important;right:auto!important}
 @media(max-width:700px){.hero-contour .rustic-orbit__card.is-left-preview:not(.is-featured)::after{left:10px!important}}
 
-/* Restore the smooth hero; confine stone relief to the existing right-hand arc. */
-.hero-contour .hero-paper{position:absolute;inset:0 0 94px;background:url('./assets/paper-grain.svg') repeat;background-size:180px 180px;opacity:.4;mix-blend-mode:multiply;mask-image:linear-gradient(#000 calc(100% - 110px),transparent 100%);pointer-events:none}
-.hero-contour .hero-atmosphere::after{display:block;inset:13% -43vw auto auto;width:74vw;height:74vw;border:0;border-radius:50%;background:linear-gradient(135deg,color-mix(in srgb,var(--orange) 20%,transparent),transparent 75%),url('./assets/hero-white-stone.svg') center/cover;filter:none;mask-image:radial-gradient(circle,transparent 0 55%,rgb(0 0 0 / 35%) 59%,#000 65%,rgb(0 0 0 / 80%) 71%,rgb(0 0 0 / 18%) 76%,transparent 80%),linear-gradient(#000 55%,transparent 98%);mask-composite:intersect;pointer-events:none}
-@media(max-width:700px){.hero-contour .hero-atmosphere::after{top:17%;right:-103vw;width:160vw;height:160vw}}
+/* Faint stone relief across the ivory surface; no circular accent. */
+.hero-contour .hero-atmosphere::after{display:none}
+.hero-contour .hero-paper{position:absolute;inset:0;background:url('./assets/hero-white-stone.svg') center top/1000px 750px repeat;opacity:.22;mix-blend-mode:multiply;mask-image:linear-gradient(#000 0%,#000 52%,rgb(0 0 0 / 35%) 80%,transparent 100%);pointer-events:none}
+@media(max-width:700px){.hero-contour .hero-paper{background-size:720px 540px;opacity:.18}}
