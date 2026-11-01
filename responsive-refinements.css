@@ -838,3 +838,8 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
 @media(max-width:700px){.hero-contour .rustic-orbit__card:not(.is-featured)::after{right:10px!important;width:6px!important}}
 .hero-contour .rustic-orbit__card.is-left-preview:not(.is-featured)::after{left:14px!important;right:auto!important}
 @media(max-width:700px){.hero-contour .rustic-orbit__card.is-left-preview:not(.is-featured)::after{left:10px!important}}
+
+/* White stone relief replaces the circular accent without changing the hero colors. */
+.hero-contour .hero-atmosphere::after{display:none}
+.hero-contour .hero-paper{inset:0;background:url('./assets/hero-white-stone.svg') center top/cover no-repeat;opacity:.72;mix-blend-mode:multiply;mask-image:linear-gradient(#000 0%,#000 46%,rgb(0 0 0 / 32%) 78%,transparent 100%);pointer-events:none}
+@media(max-width:700px){.hero-contour .hero-paper{background-size:auto 880px;opacity:.65}}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="900" viewBox="0 0 1200 900">
+  <filter id="limestone" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+    <feTurbulence type="fractalNoise" baseFrequency=".018 .018" numOctaves="4" seed="23" stitchTiles="stitch" result="relief"/>
+    <feDiffuseLighting in="relief" surfaceScale="5" diffuseConstant="1" lighting-color="#fff" result="light">
+      <feDistantLight azimuth="225" elevation="48"/>
+    </feDiffuseLighting>
+    <feComponentTransfer in="light">
+      <feFuncR type="linear" slope=".32" intercept=".73"/>
+      <feFuncG type="linear" slope=".32" intercept=".73"/>
+      <feFuncB type="linear" slope=".32" intercept=".73"/>
+    </feComponentTransfer>
+  </filter>
+  <path fill="#fff" filter="url(#limestone)" d="M0 0h1200v900H0z"/>
+</svg>
