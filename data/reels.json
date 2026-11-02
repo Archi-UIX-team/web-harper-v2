@@ -7,50 +7,52 @@
   },
   "items": [
     {
-      "url": "https://www.instagram.com/favehotels/reels/",
-      "cover": "./assets/moment-4.png",
-      "alt": "Harper editorial cover showing a guest enjoying a quiet moment"
+      "url": "https://www.instagram.com/reel/DettYzjhQdQ/",
+      "cover": "./assets/reels/DettYzjhQdQ.jpg",
+      "video": "./assets/reels/DettYzjhQdQ.mp4",
+      "alt": "Favehotels Reel featuring a berry and basil drink"
     },
     {
-      "url": "https://www.instagram.com/favehotels/reels/",
-      "cover": "./assets/moment-5.png",
-      "alt": "Harper editorial cover showing a warm welcome from hotel staff"
+      "url": "https://www.instagram.com/reel/DeeKFpoSKX7/",
+      "cover": "./assets/reels/DeeKFpoSKX7.jpg",
+      "video": "./assets/reels/DeeKFpoSKX7.mp4",
+      "alt": "Archipelago Black Box Battle cocktail challenge"
     },
     {
-      "url": "https://www.instagram.com/favehotels/reels/",
-      "preview": true,
-      "cover": "./assets/moment-1.png",
-      "alt": "Harper hotel guest reading in a room"
+      "url": "https://www.instagram.com/reel/DebyfNCyBvp/",
+      "cover": "./assets/reels/DebyfNCyBvp.jpg",
+      "video": "./assets/reels/DebyfNCyBvp.mp4",
+      "alt": "Archipelago Black Box Battle dessert challenge"
     },
     {
-      "url": "https://www.instagram.com/favehotels/reels/",
-      "preview": true,
-      "cover": "./assets/orbit-breakfast.webp",
-      "alt": "Breakfast by a hotel window"
+      "url": "https://www.instagram.com/reel/DelaylrBZLG/",
+      "cover": "./assets/reels/DelaylrBZLG.jpg",
+      "video": "./assets/reels/DelaylrBZLG.mp4",
+      "alt": "A welcome to fave+ Hotel Banyumanik in Semarang"
     },
     {
-      "url": "https://www.instagram.com/favehotels/reels/",
-      "preview": true,
-      "cover": "./assets/moment-3.png",
-      "alt": "Guests enjoying a playful moment in a hotel room"
+      "url": "https://www.instagram.com/reel/DeOcStuot0j/",
+      "cover": "./assets/reels/DeOcStuot0j.jpg",
+      "video": "./assets/reels/DeOcStuot0j.mp4",
+      "alt": "A stay and dining offer at fave+ Hotel Lampung"
     },
     {
-      "url": "https://www.instagram.com/favehotels/reels/",
-      "preview": true,
-      "cover": "./assets/orbit-dining.webp",
-      "alt": "Dinner served in a warmly lit hotel restaurant"
+      "url": "https://www.instagram.com/reel/DdyJr6Lx2TW/",
+      "cover": "./assets/reels/DdyJr6Lx2TW.jpg",
+      "video": "./assets/reels/DdyJr6Lx2TW.mp4",
+      "alt": "A look inside fave+ Hotel Lampung"
     },
     {
-      "url": "https://www.instagram.com/favehotels/reels/",
-      "preview": true,
-      "cover": "./assets/moment-2.png",
-      "alt": "Guest enjoying a meal at a Harper hotel"
+      "url": "https://www.instagram.com/reel/DdsaG2uo6e8/",
+      "cover": "./assets/reels/DdsaG2uo6e8.jpg",
+      "video": "./assets/reels/DdsaG2uo6e8.mp4",
+      "alt": "BBQ night at fave+ Hotel Lampung"
     },
     {
-      "url": "https://www.instagram.com/favehotels/reels/",
-      "preview": true,
-      "cover": "./assets/orbit-welcome.webp",
-      "alt": "Flowers and a welcoming hotel lounge"
+      "url": "https://www.instagram.com/reel/DcP9f-BRhef/",
+      "cover": "./assets/reels/DcP9f-BRhef.jpg",
+      "video": "./assets/reels/DcP9f-BRhef.mp4",
+      "alt": "A tour of fave+ Hotel Lampung"
     }
   ]
 }
