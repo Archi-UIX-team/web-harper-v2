@@ -469,7 +469,7 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
 @media(max-width:700px){.mobile-journal-story.is-featured .mobile-story-image{width:100%;height:auto;aspect-ratio:1.5}.mobile-journal-story.is-featured .mobile-story-image img{width:100%;height:100%;aspect-ratio:1.5;object-fit:cover}}
 
 /* Editorial ivory sheet with the supplied HARPER pattern as an offset backing. */
-.journal-paper-area{overflow:visible;background:linear-gradient(to bottom,#d87515 0 48px,#f5f2ec 48px 100%);padding:0 0 76px;isolation:isolate}
+.journal-paper-area{overflow:visible;background:#f5f2ec;padding:0 0 76px;isolation:isolate}
 .journal-paper-area::before{display:none}
 .journal.news-section.journal-editorial{position:relative;isolation:isolate;width:90%;max-width:1480px;margin:0 auto;padding:48px clamp(28px,3.8vw,64px) 30px;background:none;border:0;border-radius:0;box-shadow:0 12px 28px #493a2817;overflow:visible}
 .journal-editorial::before{content:'';position:absolute;z-index:-2;inset:-10px -12px -12px -6px;background:#808285 url('./assets/harper-pattern.webp') center/cover;border-right:1px solid var(--orange);clip-path:polygon(0 0,64px 0,64px 10px,100% 10px,100% 100%,18px 100%,18px 32px,0 32px);pointer-events:none}
@@ -514,7 +514,7 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
  .journal-editorial .editorial-supporting .news-photo{height:120px}
 }
 @media(max-width:700px){
- .journal-paper-area{padding-bottom:44px;background:linear-gradient(to bottom,#d87515 0 28px,#f5f2ec 28px 100%)}
+ .journal-paper-area{padding-bottom:44px;background:#f5f2ec}
  .journal.news-section.journal-editorial{width:calc(100% - 36px);padding:30px 18px 24px;margin:0 auto}
  .journal-editorial::before{inset:-6px -7px -7px -3px;clip-path:polygon(0 0,44px 0,44px 6px,100% 6px,100% 100%,10px 100%,10px 22px,0 22px)}
  .journal-editorial>.news-heading{margin-bottom:25px;padding:0}
@@ -839,6 +839,13 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
 @media(max-width:700px){.journal-paper-area{padding-bottom:24px}}
 .journal-editorial a:is(:hover,:focus-visible) h3{color:var(--orange)!important;text-decoration-color:var(--orange)!important}
 .journal-editorial a:is(:hover,:focus-visible) .news-read,.journal-editorial a:is(:hover,:focus-visible) .mobile-story-read{color:var(--orange)!important}
+
+/* News enters sooner through real section spacing, while keeping the existing pin and book motion. */
+@media(min-width:801px){.offers{padding-bottom:calc(clamp(84px,9vw,130px) - 5vh)}}
+@media(max-width:800px){.offers{padding-bottom:max(52px,calc(80px - 5vh))}}
+.journal-editorial .news-heading .journal-eyebrow.framed-kicker{width:max-content;max-width:100%;padding:7px 25px 7px 9px}
+.journal-editorial .journal-eyebrow .scroll-blur-line{display:inline-flex;align-items:center;gap:2px;padding-inline:0!important}
+.journal-editorial .journal-eyebrow .scroll-blur-word{padding-inline:0!important}
 
 /* Focused background polish; preserve hotel layers and booking geometry. */
 .hero-contour #hero-title{color:var(--gray)!important}
