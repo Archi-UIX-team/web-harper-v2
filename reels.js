@@ -7,6 +7,7 @@
   const center = document.getElementById('reels-center');
   const social = document.getElementById('reels-social');
   const actions = stage.querySelector('.reels-actions');
+  const pagination = document.getElementById('reels-pagination');
   const empty = document.getElementById('reels-empty');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const phone = matchMedia('(max-width: 700px)');
@@ -45,7 +46,9 @@
     stepFrom = phase;
     stepTo = phase + wrap(target - phase);
     stepAt = performance.now();
-    lastAdvance = stepAt;
+    selectedIndex = index;
+    carouselElapsed = 0;
+    updatePagination();
     if (reduced.matches) { phase = stepTo; stepAt = 0; render(); }
   }
   function openVideo(item) {
@@ -68,7 +71,9 @@
     if (!reduced.matches) video.play().catch(()=>{});
   }
   let visible = false, hover = false, focused = false, dragging = false;
-  let phase = 0, last = 0, raf = 0, pointerX = 0, pointerStart = 0, pointerActive = false, suppressClickUntil = 0, lastAdvance = 0;
+  let phase = 0, last = 0, raf = 0, pointerX = 0, pointerStart = 0, pointerActive = false, suppressClickUntil = 0;
+  let carouselElapsed = 0, selectedIndex = 0;
+  const AUTOPLAY_MS = 6000;
   let stepFrom = 0, stepTo = 0, stepAt = 0;
   let geometry = {x:0,y:0,w:0,h:0,length:1,points:[],focal:0};
   const wrap = value => ((value + .5) % 1 + 1) % 1 - .5;
@@ -79,6 +84,28 @@
     typeof item.cover === 'string' &&
     (/^https:\/\/www\.instagram\.com\/favehotels\/reels\/?$/.test(item.url || '') ||
       /^https:\/\/www\.instagram\.com\/reel\/[\w-]+\/?(?:\?.*)?$/.test(item.url || ''));
+  function updatePagination() {
+    if (!pagination) return;
+    [...pagination.children].forEach((button,index) => {
+      const amount = index < selectedIndex ? 1 : index === selectedIndex ? carouselElapsed / AUTOPLAY_MS : 0;
+      button.querySelector('span').style.transform = `scaleX(${Math.min(1,amount).toFixed(4)})`;
+      if (index === selectedIndex) button.setAttribute('aria-current','true');
+      else button.removeAttribute('aria-current');
+    });
+  }
+  function makePagination() {
+    if (!pagination) return;
+    pagination.replaceChildren();
+    items.forEach((_,index) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.setAttribute('aria-label',`Show reel ${index+1} of ${items.length}`);
+      button.innerHTML = '<span aria-hidden="true"></span>';
+      button.addEventListener('click',() => alignTo(index));
+      pagination.append(button);
+    });
+    updatePagination();
+  }
   function renderSocial(profiles) {
     social.replaceChildren();
     for (const name of ['instagram','facebook','x']) {
@@ -100,13 +127,13 @@
     const viewportHeight = window.visualViewport?.height || innerHeight;
     const sectionStyle = getComputedStyle(section);
     const verticalPadding = parseFloat(sectionStyle.paddingTop) + parseFloat(sectionStyle.paddingBottom);
-    const stageGap = parseFloat(getComputedStyle(stage).rowGap) || 0;
     const actionHeight = actions?.getBoundingClientRect().height || 0;
-    const available = viewportHeight - navHeight - verticalPadding - center.getBoundingClientRect().height - stageGap * 2 - actionHeight - (mobile ? 18 : 24);
-    const galleryHeight = Math.max(mobile ? 290 : 320, Math.min(available, mobile ? 530 : 650));
-    const h = Math.max(250, galleryHeight - (mobile ? 28 : 38));
+    const margin = element => { const style=getComputedStyle(element); return (parseFloat(style.marginTop)||0)+(parseFloat(style.marginBottom)||0); };
+    const available = viewportHeight - navHeight - verticalPadding - center.getBoundingClientRect().height - margin(center) - (pagination?.getBoundingClientRect().height||0) - margin(pagination) - actionHeight - margin(actions) - 8;
+    const galleryHeight = Math.max(210, Math.min(available, mobile ? 520 : 660));
+    const h = Math.max(192, galleryHeight - 18);
     const w = h * 9 / 16;
-    const spacing = w * (mobile ? .83 : 1.13);
+    const spacing = mobile ? w*.82 : Math.min(w*1.45,(orbit.clientWidth-w*.76)/4);
     geometry = {x:spacing,y:0,w,h,length:spacing*cards.length,points:[0],focal:0};
     orbit.style.setProperty('--gallery-height',`${galleryHeight}px`);
     render();
@@ -174,7 +201,7 @@
       if(depth<distance){distance=depth;nearest=i;}
       const x=offset*geometry.x;
       const y=Math.min(depth*depth,5)*(phone.matches?5:11);
-      const scale=1-.2*Math.min(1,depth);
+      const scale=1-.19*Math.min(1,depth)-.05*Math.max(0,Math.min(depth-1,1));
       const visibility=depth<=(phone.matches?1.2:2.4)?1:0;
       card.style.width=`${geometry.w}px`;
       card.style.height=`${geometry.h}px`;
@@ -204,8 +231,11 @@
       const t=reduced.matches?1:ease((now-stepAt)/650);
       phase=stepFrom+(stepTo-stepFrom)*t;
       if(t>=1)stepAt=0;
-    } else if(visible&&!document.hidden&&!hover&&!focused&&!pointerActive&&!player?.open&&!reduced.matches&&now-lastAdvance>3500){
-      alignTo((featuredIndex+1)%cards.length);
+    }
+    if(visible&&!document.hidden&&!hover&&!focused&&!pointerActive&&!player?.open&&!reduced.matches){
+      carouselElapsed+=dt;
+      if(carouselElapsed>=AUTOPLAY_MS)alignTo((selectedIndex+1)%cards.length);
+      else updatePagination();
     }
     // Phase wraps continuously: there is no reset frame or positional jump.
     phase=((phase%1)+1)%1;
@@ -216,6 +246,7 @@
     items=(data.items || []).filter(valid);
     renderSocial(data.profiles);
     if (!items.length) {empty.hidden=false;setState('empty');return;}
+    makePagination();
     renderCards();
     // Refresh the existing scroll pin after async Reel data determines the final section height.
     requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
@@ -225,7 +256,7 @@
     }, {threshold:[0,.05]});
     cards.forEach(card => cardObserver.observe(card));
     setState('spinning');
-    const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;document.body.classList.toggle('reels-in-view',visible);if(visible)lastAdvance=performance.now();syncPlayback();},{threshold:0});observer.observe(section);
+    const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;document.body.classList.toggle('reels-in-view',visible);last=performance.now();syncPlayback();},{threshold:0});observer.observe(section);
     document.addEventListener('visibilitychange',()=>{last=performance.now();syncPlayback();});
     orbit.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')hover=true;});
     orbit.addEventListener('pointerleave',()=>{hover=false;});
@@ -233,7 +264,7 @@
     orbit.addEventListener('focusout',()=>queueMicrotask(()=>{focused=orbit.contains(document.activeElement);if(!focused)manualPreview=false;syncPlayback();}));
     orbit.addEventListener('pointerdown',event=>{
       if(event.button!==0)return;
-      pointerActive=true;stepAt=0;lastAdvance=performance.now();pointerX=pointerStart=event.clientX;
+      pointerActive=true;stepAt=0;pointerX=pointerStart=event.clientX;
     });
     orbit.addEventListener('pointermove',event=>{
       if(!pointerActive)return;

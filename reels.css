@@ -1,15 +1,15 @@
 /* Native-video adaptation of the FlexCarousel horizontal layout. */
 .harper-grey-sequence .harper-reels{height:auto!important;max-height:none!important}
-@media(min-width:701px){.harper-grey-sequence .harper-reels{padding-top:42px;padding-bottom:36px}}
+@media(min-width:701px){.harper-grey-sequence .harper-reels{padding-top:28px;padding-bottom:20px}}
 .harper-reels .reels-contour{opacity:.08}
 .harper-reels .reels-stage{
-  display:flex!important;flex-direction:column;align-items:center;gap:clamp(16px,2vw,24px);
+  display:flex!important;flex-direction:column;align-items:center;gap:0;
   width:100%;max-width:none;height:auto!important;min-height:0!important;max-height:none!important;
   overflow:visible;transform:none!important;
 }
 .harper-reels .reels-center{
   position:relative!important;inset:auto!important;order:0;width:min(100% - 32px,900px);
-  margin:0;padding:0 16px;transform:none!important;pointer-events:auto;
+  margin:0 0 42px;padding:0 16px;transform:none!important;pointer-events:auto;
 }
 .harper-reels .reels-center h2{margin:0;font-size:clamp(35px,3.2vw,48px);line-height:1.08}
 .harper-reels .reels-social{margin-top:15px}
@@ -39,13 +39,20 @@
 .harper-reels .reels-card.is-highlighted img,.harper-reels .reels-card.is-highlighted video{filter:none!important}
 .harper-reels .reels-card-badge{display:none}
 .harper-reels .reels-card:focus-visible{outline:3px solid var(--orange);outline-offset:4px}
-.harper-reels .reels-actions{order:2;display:flex;align-items:center;justify-content:center;gap:18px;min-height:44px;color:#fff8ed;font:700 12px/1 var(--sans);text-transform:uppercase}
+.harper-reels .reels-pagination{order:2;display:flex;align-items:center;justify-content:center;gap:5px;margin-top:7px;min-height:40px}
+.harper-reels .reels-pagination button{position:relative;display:grid;place-items:center;width:40px;height:40px;padding:0;border:0;background:none;cursor:pointer}
+.harper-reels .reels-pagination button::before,.harper-reels .reels-pagination button span{position:absolute;left:8px;top:calc(50% - 1.5px);width:24px;height:3px;content:"";background:#fff6e9}
+.harper-reels .reels-pagination button::before{opacity:.34}
+.harper-reels .reels-pagination button span{background:#fff;transform:scaleX(0);transform-origin:left center;will-change:transform}
+.harper-reels .reels-pagination button:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.harper-reels .reels-actions{order:3;display:flex;align-items:center;justify-content:center;gap:18px;min-height:44px;margin-top:4px;color:#fff8ed;font:700 12px/1 var(--sans);text-transform:uppercase}
 .harper-reels .reels-actions a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding:8px 0}
 .harper-reels .reels-actions button{display:grid;place-items:center;width:44px;height:44px;border:1px solid rgb(255 248 237 / 65%);background:transparent;color:inherit;font:26px/1 var(--sans);cursor:pointer}
 .harper-reels .reels-actions :is(a,button):focus-visible{outline:3px solid #fff;outline-offset:3px}
 @media(max-width:700px){
-  .harper-grey-sequence .harper-reels{padding-top:40px;padding-bottom:38px}
-  .harper-reels .reels-stage{gap:16px}
+  .harper-grey-sequence .harper-reels{padding-top:30px;padding-bottom:24px}
+  .harper-reels .reels-center{margin-bottom:30px}
+  .harper-reels .reels-pagination{margin-top:7px}
   body.reels-in-view .mobile-floating-book{display:none!important}
   .harper-reels .reels-center{width:100%;padding:0 18px}
   .harper-reels .reels-center h2{font-size:clamp(29px,8vw,39px)}
