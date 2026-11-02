@@ -904,3 +904,15 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
   .hero-contour .rustic-orbit__card img{border-radius:5px!important}
   .hero-contour .rustic-orbit__caption{inset:auto 5px 5px;border-radius:0 0 5px 5px!important}
 }
+
+/* Preview stripes belong to the clipped photo surface, inside its frame. */
+.hero-contour .rustic-orbit__photo{position:relative;display:block;width:100%;height:100%;overflow:hidden;border-radius:4px}
+.hero-contour .rustic-orbit__photo img{display:block;width:100%;height:100%}
+.hero-contour .rustic-orbit__card:not(.is-featured)::after{display:none!important}
+.hero-contour .rustic-orbit__card:not(.is-featured) .rustic-orbit__photo::after{content:"";position:absolute;z-index:1;top:0;right:8px;bottom:0;width:8px;background:var(--orange);pointer-events:none}
+.hero-contour .rustic-orbit__card.is-left-preview:not(.is-featured) .rustic-orbit__photo::after{left:8px;right:auto}
+@media(max-width:700px){
+ .hero-contour .rustic-orbit__photo{border-radius:5px}
+ .hero-contour .rustic-orbit__card:not(.is-featured) .rustic-orbit__photo::after{right:6px;width:6px}
+ .hero-contour .rustic-orbit__card.is-left-preview:not(.is-featured) .rustic-orbit__photo::after{left:6px;right:auto}
+}

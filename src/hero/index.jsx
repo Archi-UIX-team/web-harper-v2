@@ -157,7 +157,7 @@ function RusticOrbit() {
         aria-hidden={index === active ? undefined : true}
         aria-current={index === active ? 'true' : undefined}
         aria-label={`Show ${room.hotel} room in ${room.place}${index === active ? ', featured' : ''}`}>
-        <img src={room.src} alt={room.alt} style={{ objectPosition: room.position }} draggable="false" loading="eager" />
+        <span className="rustic-orbit__photo"><img src={room.src} alt={room.alt} style={{ objectPosition: room.position }} draggable="false" loading="eager" /></span>
         {index === active && <span className="rustic-orbit__caption" aria-hidden="true"><span className="rustic-orbit__hotel"><svg className="rustic-orbit__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M19 9c0 5-7 12-7 12S5 14 5 9a7 7 0 0 1 14 0Z"/><circle cx="12" cy="9" r="2.3"/></svg><span><strong>{room.hotel}</strong><small>{room.place}, Indonesia</small></span></span></span>}
       </button>)}
       <span className="visually-hidden" aria-live="polite">Featured room: {rooms[active].hotel}, {rooms[active].place}. Use left and right arrow keys or select a surrounding room.</span>
