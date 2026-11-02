@@ -828,7 +828,7 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
 /* The plaster surface extends through the Offers entrance without a tiled edge. */
 .offers,.offers::before{
  background-color:var(--orange);
- background-image:linear-gradient(rgb(240 139 29 / 10%),rgb(240 139 29 / 10%)),url('./assets/offers-plaster-orange.webp');
+ background-image:linear-gradient(rgb(240 139 29 / 20%),rgb(240 139 29 / 20%)),url('./assets/offers-mottled-orange-hd.webp');
  background-size:cover,cover;background-position:center;background-repeat:no-repeat;background-blend-mode:normal;
 }
 
