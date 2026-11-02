@@ -855,10 +855,10 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
  background-position:center;
  background-repeat:no-repeat;
 }
-.journal-paper-area::before{display:block;inset:0 0 auto;height:calc(50% - 8px);z-index:0;opacity:1;pointer-events:none}
+.journal-paper-area::before{display:block;inset:0 0 auto;height:calc(42.5% - 6.8px);z-index:0;opacity:1;pointer-events:none}
 .journal-paper-area>.journal{z-index:1}
-@media(min-width:961px) and (min-height:821px) and (prefers-reduced-motion:no-preference){.journal-paper-area::before{height:calc(50% - 8px - min(3vh,85px))}}
-@media(max-width:700px){.journal-paper-area::before{height:calc(50% - 12px)}}
+@media(min-width:961px) and (min-height:821px) and (prefers-reduced-motion:no-preference){.journal-paper-area::before{height:calc(42.5% - 6.8px - min(2.55vh,72.25px))}}
+@media(max-width:700px){.journal-paper-area::before{height:calc(42.5% - 10.2px)}}
 
 /* Focused background polish; preserve hotel layers and booking geometry. */
 .hero-contour #hero-title{color:var(--gray)!important}
