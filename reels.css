@@ -1,0 +1,41 @@
+/* Native-video adaptation of the CircularGallery bent horizontal layout. */
+.harper-reels .reels-stage{
+  display:flex!important;flex-direction:column;align-items:center;gap:clamp(26px,3vw,42px);
+  width:100%;max-width:none;height:auto!important;min-height:0!important;max-height:none!important;
+  overflow:visible;transform:none!important;
+}
+.harper-reels .reels-center{
+  position:relative!important;inset:auto!important;order:0;width:min(100% - 32px,900px);
+  margin:0;padding:0 16px;transform:none!important;pointer-events:auto;
+}
+.harper-reels .reels-center h2{margin:0;font-size:clamp(35px,3.5vw,55px);line-height:1.05}
+.harper-reels .reels-social{margin-top:15px}
+.harper-reels .reels-orbit{
+  position:relative!important;inset:auto!important;order:1;display:block;width:100%;
+  height:var(--gallery-height,680px)!important;margin:0;padding:0;overflow:hidden;
+  transform:none!important;isolation:isolate;touch-action:pan-y;cursor:grab;
+  user-select:none;-webkit-user-select:none;
+}
+.harper-reels .reels-orbit:active{cursor:grabbing}
+.harper-reels .reels-stage::before,.harper-reels .reels-stage::after,
+.harper-reels .reels-orbit::before,.harper-reels .reels-orbit-spark,
+.harper-reels .reels-card-light{display:none!important;content:none!important}
+.harper-reels .reels-card,.harper-reels .reels-card.is-highlighted{
+  position:absolute;top:48%;left:50%;display:block;overflow:hidden;
+  width:var(--card-width)!important;height:var(--card-height)!important;
+  aspect-ratio:9/16;border:1px solid rgb(255 248 237 / 65%);border-radius:0;
+  background:#777;box-shadow:0 20px 36px rgb(36 30 24 / 24%);
+  transform:var(--card-transform)!important;transition:none!important;
+  backface-visibility:hidden;contain:paint;
+}
+.harper-reels .reels-card.is-highlighted{border-color:#fff2db;box-shadow:0 26px 45px rgb(36 30 24 / 30%),0 0 0 1px rgb(255 232 199 / 40%)}
+.harper-reels .reels-card img,.harper-reels .reels-card video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
+.harper-reels .reels-card-badge{display:none}
+.harper-reels .reels-card:focus-visible{outline:3px solid var(--orange);outline-offset:4px}
+@media(max-width:700px){
+  .harper-reels .reels-stage{gap:20px}
+  .harper-reels .reels-center{width:100%;padding:0 18px}
+  .harper-reels .reels-center h2{font-size:clamp(29px,8vw,39px)}
+  .harper-reels .reels-card,.harper-reels .reels-card.is-highlighted{top:47%}
+}
+@media(prefers-reduced-motion:reduce){.harper-reels .reels-card{transition:none!important}}

@@ -90,45 +90,17 @@
       social.append(icon);
     }
   }
-  // Sample arc length once on resize. Equal distances, rather than equal angles,
-  // keep the cards separated around the narrow ends of the ellipse.
+  // Match CircularGallery's horizontal bend while preserving native 9:16 video frames.
   function measure() {
-    stage.setAttribute('aria-description', 'Drag or swipe to rotate Moments. Focus a reel and use the left and right arrow keys. Press Enter to watch.');
+    stage.setAttribute('aria-description', 'Drag or swipe to browse Reels. Use the left and right arrow keys to navigate.');
     const box = orbit.getBoundingClientRect();
     const mobile = phone.matches;
-    const previousHeight = Math.min(mobile ? 430 : 500, box.height * (mobile ? .82 : .70));
-    const focalTheta = mobile ? Math.PI/2 : Math.acos(.38);
-    const y = box.height * (mobile ? .10 : .06);
-    const centerY = box.top + box.height / 2 + Math.sin(focalTheta) * y;
-    const sectionBox = section.getBoundingClientRect();
-    const headingBottom = document.getElementById('reels-center').getBoundingClientRect().bottom;
-    const availableHeight = Math.max(180, 2 * Math.min(sectionBox.bottom - centerY - 32, centerY - headingBottom - 16));
-    const activeHeight = Math.min(previousHeight * 1.70, box.height * .98, availableHeight, mobile ? (box.width - 12) * 16 / 9 : Infinity);
-    const h = activeHeight * .58;
+    const h = mobile ? Math.min(470, Math.max(350, box.width * 1.09)) : Math.min(560, Math.max(400, box.width * .39));
     const w = h * 9 / 16;
-    const x = mobile ? box.width * .90 : Math.max(0, box.width / 2 - w / 2 - 20);
-    const points = [{theta:0,length:0}];
-    let length = 0, previous = [x,0];
-    for (let i = 1; i <= 720; i++) {
-      const theta = i / 720 * Math.PI * 2;
-      const point = [Math.cos(theta)*x, Math.sin(theta)*y];
-      length += Math.hypot(point[0]-previous[0],point[1]-previous[1]);
-      points.push({theta,length}); previous = point;
-    }
-    const focal = points[Math.round(focalTheta/(Math.PI*2)*720)].length / Math.max(1,length);
-    geometry = {x,y,w,h,length,points,focal};
-    orbit.style.setProperty('--orbit-width', `${x*2}px`);
-    orbit.style.setProperty('--orbit-height', `${y*2}px`);
+    const spacing = w * (mobile ? .98 : 1.10);
+    geometry = {x:spacing,y:0,w,h,length:spacing*cards.length,points:[0],focal:0};
+    orbit.style.setProperty('--gallery-height',`${h + (mobile ? 100 : 125)}px`);
     render();
-  }
-  function pointAt(progress) {
-    const target = ((progress % 1 + 1) % 1) * geometry.length;
-    const list = geometry.points;
-    let lo=0, hi=list.length-1;
-    while (hi-lo>1) {const mid=(lo+hi)>>1;if(list[mid].length<target)lo=mid;else hi=mid;}
-    const a=list[lo],b=list[hi];
-    const theta=a.theta+(b.theta-a.theta)*(target-a.length)/Math.max(.001,b.length-a.length);
-    return [Math.cos(theta)*geometry.x,Math.sin(theta)*geometry.y];
   }
   function renderCards() {
     orbit.replaceChildren();
@@ -139,6 +111,7 @@
     cards = items.map((item,i) => {
       const link = document.createElement('a');
       link.className = 'reels-card'; link.href = item.url; link.target = '_blank'; link.rel = 'noopener noreferrer';
+      link.draggable = false;
       link.setAttribute('aria-label', item.url.includes('/favehotels/reels') ? `Browse Favehotels Reels on Instagram. Preview photo: ${item.alt}` : `Watch Reel on Instagram. Cover: ${item.alt}`);
       if (item.cover || item.thumbnail) {
         if (/^\.\/assets\/reels\/[\w-]+\.mp4$/.test(item.video || '')) {
@@ -149,7 +122,7 @@
           video.setAttribute('aria-hidden', 'true'); video.src = item.video;
           link.classList.add('has-video'); link.append(video);
         } else {
-          const img = document.createElement('img'); img.src = item.cover || item.thumbnail; img.alt = item.alt; img.loading = i < 2 ? 'eager' : 'lazy'; img.decoding = 'async';
+          const img = document.createElement('img'); img.src = item.cover || item.thumbnail; img.alt = item.alt; img.loading = i < 2 ? 'eager' : 'lazy'; img.decoding = 'async'; img.draggable = false;
           link.append(img);
         }
         const badge = document.createElement('span');
@@ -165,7 +138,7 @@
       const light=document.createElement('span');
       light.className='reels-card-light';light.setAttribute('aria-hidden','true');
       lights.push(light);orbit.append(light,link);
-      link.setAttribute('aria-description', 'Press Space to play or pause the preview. Press Enter to open the video player.');
+      link.setAttribute('aria-description', 'Press Enter to watch this Reel.');
       link.addEventListener('click', e => {
         if (performance.now() < suppressClickUntil) { e.preventDefault(); return; }
         if (item.video && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) { e.preventDefault(); openVideo(item); }
@@ -184,39 +157,30 @@
   function render() {
     if (!cards.length || !geometry.points.length) return;
     const n=cards.length;
-    sparks.forEach(({node,progress})=>{const [x,y]=pointAt(progress);node.style.transform=`translate(-50%,-50%) translate(${x}px,${y}px)`;});
     let nearest=0, distance=Infinity, visibilityChanged=false;
     cards.forEach((card,i) => {
-      const offset=wrap(i/n+phase);
-      if(Math.abs(offset)<distance){distance=Math.abs(offset);nearest=i;}
-      const [x,y]=pointAt(geometry.focal+i/n+phase);
-      const weight=Math.exp(-Math.pow(offset*n/.43,2));
-      const scale=.90+(1/.58-.90)*weight;
+      const offset=wrap(i/n+phase)*n;
+      const depth=Math.abs(offset);
+      if(depth<distance){distance=depth;nearest=i;}
+      const x=offset*geometry.x;
+      const y=Math.min(depth*depth,6)*(phone.matches?17:24);
+      const scale=Math.max(.77,1-depth*.085);
+      const visibility=depth<(phone.matches?1.7:2.7)?1:0;
       card.style.width=`${geometry.w}px`;
       card.style.height=`${geometry.h}px`;
-      card.style.setProperty('--card-width',`${geometry.w}px`);card.style.setProperty('--card-height',`${geometry.h}px`);
-      const lean=phone.matches?0:-1.2*x/geometry.x-.6*weight;
-      card.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(3)}px,${y.toFixed(3)}px,0) rotate(${lean.toFixed(3)}deg) scale(${scale.toFixed(5)})`;
+      card.style.setProperty('--card-width',`${geometry.w}px`);
+      card.style.setProperty('--card-height',`${geometry.h}px`);
+      card.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(3)}px,${y.toFixed(3)}px,0) rotate(${(-offset*(phone.matches?2.2:3)).toFixed(3)}deg) scale(${scale.toFixed(5)})`;
       card.style.setProperty('--card-transform',card.style.transform);
-      // Fade the back cards at the narrow outer turns, where enlarged frames
-      // would overlap. Every reel remains in the continuous/manual orbit.
-      const backEdge = !phone.matches && n > 6
-        ? ease((Math.abs(x)/geometry.x-.68)/.15) * ease((-y/geometry.y-.05)/.20) : 0;
-      const visibility=(phone.matches ? 1-ease((Math.abs(offset)*n-.85)/.65) : 1-backEdge) * (.86+.14*weight);
       const orbitVisible=String(visibility>.08);
       if(card.dataset.orbitVisible!==orbitVisible){card.dataset.orbitVisible=orbitVisible;visibilityChanged=true;}
       card.style.setProperty('opacity',String(visibility),'important');
-      card.style.pointerEvents=visibility>.05?'auto':'none';
-      const light=lights[i];
-      light.style.width=`${geometry.w*scale*1.4}px`;light.style.height=`${geometry.h*scale*.18}px`;
-      light.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(3)}px,${(y+geometry.h*scale/2+14).toFixed(3)}px,0)`;
-      light.style.opacity=String(visibility*(.30+.22*weight));
-      card.style.zIndex=String(Math.round(100+weight*200+y));
-      card.style.setProperty('--reel-blur',`${(2.2*(1-weight)).toFixed(3)}px`);
-      card.style.setProperty('--reel-saturation',String(.86+.14*weight));
-      card.style.setProperty('--reel-brightness',String(.91+.09*weight));
-      card.dataset.orbitX=x.toFixed(3);card.dataset.orbitY=y.toFixed(3);
-      card.tabIndex=visibility<.08 || (phone.matches&&Math.abs(offset)*n>.6)?-1:0;
+      card.style.pointerEvents=visibility?'auto':'none';
+      card.style.zIndex=String(Math.round(100-depth*10));
+      card.style.setProperty('--reel-blur',`${Math.min(1.5,depth*.55).toFixed(2)}px`);
+      card.style.setProperty('--reel-saturation',String(Math.max(.25,1-depth*.35)));
+      card.style.setProperty('--reel-brightness','1');
+      card.tabIndex=visibility?0:-1;
     });
     highlight(nearest);
     if(visibilityChanged)syncPlayback();
@@ -231,7 +195,7 @@
       phase=stepFrom+(stepTo-stepFrom)*t;
       if(t>=1)stepAt=0;
     } else if(visible&&!document.hidden&&!hover&&!focused&&!pointerActive&&!player?.open&&!reduced.matches){
-      phase += 18 * dt / 1000 / geometry.length;
+      phase += .05 * dt / 1000 / cards.length;
     }
     // Phase wraps continuously: there is no reset frame or positional jump.
     phase=((phase%1)+1)%1;
