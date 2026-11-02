@@ -4,6 +4,8 @@ const root = document.documentElement;
 const overlay = document.querySelector('.harper-entrance');
 const brand = document.querySelector('#site-nav .brand');
 const entranceDuration = 3.16;
+const revealDelay = 2;
+const entranceSpeed = entranceDuration / revealDelay;
 
 if (root.classList.contains('entrance-pending') && overlay && brand) {
   const logo = overlay.querySelector('.harper-entrance__logo');
@@ -101,7 +103,8 @@ if (root.classList.contains('entrance-pending') && overlay && brand) {
       // Exchange the artwork on the landing frame with no overlapping copies.
       .set(brand, { opacity: 1 }, 3.12)
       .set(logo, { opacity: 0 }, 3.12)
-      .call(() => {}, null, entranceDuration);
+      .call(() => {}, null, entranceDuration)
+      .timeScale(entranceSpeed);
   }
 
   function rebuild() {
@@ -132,9 +135,9 @@ if (root.classList.contains('entrance-pending') && overlay && brand) {
   addEventListener('resize', scheduleResize);
   reduceMotion.addEventListener('change', () => { if (reduceMotion.matches) finish(); });
   window.__harperEntrance = {
-    seek(seconds) { timeline?.pause(Math.max(0, Math.min(entranceDuration - .01, seconds))); },
+    seek(seconds) { timeline?.pause(Math.max(0, Math.min(entranceDuration - .01, seconds * entranceSpeed))); },
     play() { timeline?.play(); },
-    get duration() { return timeline?.duration() || entranceDuration; }
+    get duration() { return revealDelay; }
   };
   timeout = setTimeout(finish, 6500);
   Promise.all([
