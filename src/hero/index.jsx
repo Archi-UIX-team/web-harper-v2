@@ -32,7 +32,7 @@ function RusticOrbit() {
       const introAge = now - introStart;
       const width = orbitRef.current.clientWidth, mobile = window.innerWidth < 701;
       const mainWidth = Math.min(width * (mobile ? .78 : .408), mobile ? 420 : 636);
-      const mainHeight = mobile ? Math.min(320, mainWidth * .96) : Math.min(322, window.innerHeight * .345, mainWidth * .505);
+      const mainHeight = mobile ? Math.min(320, mainWidth * .96) : Math.min(322, window.innerHeight * .36, mainWidth * .54);
       const nearest = mod(Math.round(phase), rooms.length);
       setActive(nearest);
       cardRefs.current.forEach((card, index) => {

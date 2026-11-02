@@ -6,7 +6,6 @@
   const orbit = document.getElementById('reels-orbit');
   const center = document.getElementById('reels-center');
   const social = document.getElementById('reels-social');
-  const actions = stage.querySelector('.reels-actions');
   const pagination = document.getElementById('reels-pagination');
   const empty = document.getElementById('reels-empty');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
@@ -127,14 +126,14 @@
     const viewportHeight = window.visualViewport?.height || innerHeight;
     const sectionStyle = getComputedStyle(section);
     const verticalPadding = parseFloat(sectionStyle.paddingTop) + parseFloat(sectionStyle.paddingBottom);
-    const actionHeight = actions?.getBoundingClientRect().height || 0;
     const margin = element => { const style=getComputedStyle(element); return (parseFloat(style.marginTop)||0)+(parseFloat(style.marginBottom)||0); };
-    const available = viewportHeight - navHeight - verticalPadding - center.getBoundingClientRect().height - margin(center) - (pagination?.getBoundingClientRect().height||0) - margin(pagination) - actionHeight - margin(actions) - 8;
+    const available = viewportHeight - navHeight - verticalPadding - center.getBoundingClientRect().height - margin(center) - (pagination?.getBoundingClientRect().height||0) - margin(pagination) - 8;
     const galleryHeight = Math.max(210, Math.min(available, mobile ? 520 : 660));
     const h = Math.max(192, galleryHeight - 18);
     const w = h * 9 / 16;
-    const spacing = mobile ? w*.82 : Math.min(w*1.45,(orbit.clientWidth-w*.76)/4);
-    geometry = {x:spacing,y:0,w,h,length:spacing*cards.length,points:[0],focal:0};
+    const spacing = mobile ? w*.82 : w*.905+18;
+    const outerStep = mobile ? spacing : w*.785+25;
+    geometry = {x:spacing,outerStep,y:0,w,h,length:spacing*cards.length,points:[0],focal:0};
     orbit.style.setProperty('--gallery-height',`${galleryHeight}px`);
     render();
   }
@@ -199,7 +198,7 @@
       const offset=wrap(i/n+phase)*n;
       const depth=Math.abs(offset);
       if(depth<distance){distance=depth;nearest=i;}
-      const x=offset*geometry.x;
+      const x=Math.sign(offset)*(Math.min(depth,1)*geometry.x+Math.max(0,depth-1)*geometry.outerStep);
       const y=Math.min(depth*depth,5)*(phone.matches?5:11);
       const scale=1-.19*Math.min(1,depth)-.05*Math.max(0,Math.min(depth-1,1));
       const visibility=depth<=(phone.matches?1.2:2.4)?1:0;
@@ -281,8 +280,6 @@
       const index=(featuredIndex+(event.key==='ArrowRight'?1:-1)+cards.length)%cards.length;
       cards[index].focus({preventScroll:true});alignTo(index);
     });
-    document.getElementById('reels-prev')?.addEventListener('click',()=>alignTo((featuredIndex-1+cards.length)%cards.length));
-    document.getElementById('reels-next')?.addEventListener('click',()=>alignTo((featuredIndex+1)%cards.length));
     addEventListener('resize',measure);
     window.visualViewport?.addEventListener('resize',measure);
     reduced.addEventListener('change',()=>{manualPreview=false;if(reduced.matches&&stepAt){phase=stepTo;stepAt=0;}render();syncPlayback();});

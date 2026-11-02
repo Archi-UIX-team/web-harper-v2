@@ -12,7 +12,7 @@ media.add({
 }, ({ conditions }) => {
   if (!conditions.desktop) return;
   const nav = document.getElementById('site-nav');
-  const scenes = [['hotels', .45], ...(conditions.tall ? [['journal', .13]] : []), ['moments', .16], ['membership', .13]];
+  const scenes = [['hotels', .45], ...(conditions.tall ? [['journal', .06]] : []), ['moments', .16], ['membership', .13]];
   const pins = scenes.map(([id, distance]) => {
     const section = document.getElementById(id);
     section.classList.add('motion-pinned');
