@@ -17,7 +17,7 @@ Run `npm install` once, then open <http://localhost:4173>. The build bundles the
 - The navigation stays at the top and becomes more compact on scroll without changing link font sizes. Its Book Now button opens the booking dialog.
 - Offer cards scroll past a pinned title on desktop. The title returns to normal flow on smaller screens.
 - The Journal presents linked articles in a raised editorial book over a matching floral paper surface. A separate linear-gradient frame blends the supplied grayscale cloud artwork into the warm-gray Reels section.
-- The Reels section reads `data/reels.json`: eight distinct verified Reels from favehotels and official favehotel Banyumanik and Lampung property accounts, including collaborative posts, with their original Instagram covers and videos stored locally. Videos autoplay muted, loop inline, and pause when the gallery or browser tab is hidden. A Pause videos button controls all eight frames. The desktop orbit and mobile swipe gallery retain their existing layouts and controls.
+- The Reels section uses the restored draggable, keyboard-accessible orbit. Eight verified Favehotels Reel videos and original covers are stored locally; visible videos autoplay muted and pause when the section leaves view.
 - The hero has a two-line heading, orange membership accents, and a draggable React Bits image orbit. Each major section has a distinct scroll entrance; the supplied title ornaments change from color to white over darker backgrounds. Decorative motion is disabled or simplified for reduced-motion users.
 - Booking and membership links lead to the official Harper or Archipelago websites. Journal cards link to their article pages.
 
@@ -31,4 +31,4 @@ GitHub Pages serves the static files from the root of `main`. In repository **Se
 
 ### Harper Reels data
 
-`data/reels.json` contains exact Instagram Reel permalinks, descriptive `alt` text, and local `thumbnail` and `video` paths. `data/reels-sources.json` records verification against Instagram's public profile and individual Reel embeds on 23 October 2026, including captions, original publishers, cover URLs, and SHA-256 hashes. Three clips come from the brand profile embed; five more come from the official favehotel Banyumanik and Lampung property embeds. Photo posts and editorial placeholders are excluded. Covers and MP4 videos are unmodified bytes from Instagram's `display_url` and `video_url`, stored locally to avoid expiring CDN links. Decorative orbit lines stay behind the video frames. Harper's social profile links are retained.
+`data/reels.json` maps each original Instagram Reel permalink to its local cover and MP4. `data/reels-sources.json` records source and verification details. The locally hosted files avoid expiring Instagram media URLs.
