@@ -56,7 +56,7 @@
       player = document.createElement('dialog');
       player.className = 'reel-player';
       player.setAttribute('aria-label','Watch this Moment');
-      player.innerHTML = '<div class="reel-player-heading"><h3>Moments at Harper</h3><button type="button" aria-label="Close video">×</button></div><video controls playsinline preload="metadata"></video><a target="_blank" rel="noopener noreferrer">View original Reel on Instagram ↗</a>';
+      player.innerHTML = '<div class="reel-player-heading"><h3>Lorem ipsum</h3><button type="button" aria-label="Close video">×</button></div><video controls playsinline preload="metadata"></video><a target="_blank" rel="noopener noreferrer">View original Reel on Instagram ↗</a>';
       document.body.append(player);
       player.querySelector('button').addEventListener('click',()=>player.close());
       player.addEventListener('close',()=>{const video=player.querySelector('video');video.pause();video.removeAttribute('src');video.load();syncPlayback();});
