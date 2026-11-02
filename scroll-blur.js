@@ -7,7 +7,7 @@
   if (!root || !footer) return;
 
   const textElement = 'h2,h3,h4,p,li,a,button,small,strong,time,figcaption,span';
-  const excluded = '#hero-title,.hero-orbit,.reels-orbit,.membership-device,.prism-caption,' +
+  const excluded = '#hero-title,.hero-orbit,.reels-orbit,.reels-actions,.membership-device,.prism-caption,' +
     '.site-nav,.hero-booking,.journal-cover,.journal-spine,.journal-page-count,' +
     '.journal-page-button,.journal-open-button,.news-read,.offer-action,.visually-hidden,.scroll-blur-word,' +
     '.footer-corporate,.footer-bottom,.journal-simple,.mobile-journal,.mobile-pager,.mobile-city-selection,' +

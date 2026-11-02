@@ -1,8 +1,9 @@
 /* Native-video adaptation of the FlexCarousel horizontal layout. */
 .harper-grey-sequence .harper-reels{height:auto!important;max-height:none!important}
-@media(min-width:701px){.harper-grey-sequence .harper-reels{padding-bottom:clamp(36px,4vw,56px)}}
+@media(min-width:701px){.harper-grey-sequence .harper-reels{padding-top:42px;padding-bottom:36px}}
+.harper-reels .reels-contour{opacity:.08}
 .harper-reels .reels-stage{
-  display:flex!important;flex-direction:column;align-items:center;gap:clamp(26px,3vw,42px);
+  display:flex!important;flex-direction:column;align-items:center;gap:clamp(16px,2vw,24px);
   width:100%;max-width:none;height:auto!important;min-height:0!important;max-height:none!important;
   overflow:visible;transform:none!important;
 }
@@ -10,7 +11,7 @@
   position:relative!important;inset:auto!important;order:0;width:min(100% - 32px,900px);
   margin:0;padding:0 16px;transform:none!important;pointer-events:auto;
 }
-.harper-reels .reels-center h2{margin:0;font-size:clamp(35px,3.5vw,55px);line-height:1.05}
+.harper-reels .reels-center h2{margin:0;font-size:clamp(35px,3.2vw,48px);line-height:1.08}
 .harper-reels .reels-social{margin-top:15px}
 .harper-reels .reels-orbit{
   position:relative!important;inset:auto!important;order:1;display:block;
@@ -28,16 +29,24 @@
   position:absolute;top:50%;left:50%;display:block;overflow:hidden;
   width:var(--card-width)!important;height:var(--card-height)!important;
   aspect-ratio:9/16;border:1px solid rgb(255 248 237 / 65%);border-radius:0;
-  background:#777;box-shadow:0 20px 36px rgb(36 30 24 / 24%);
+  background:#777;box-shadow:0 12px 28px rgb(36 30 24 / 18%);
   transform:var(--card-transform)!important;transition:none!important;
   backface-visibility:hidden;contain:paint;
 }
-.harper-reels .reels-card.is-highlighted{border-color:#fff2db;box-shadow:0 26px 45px rgb(36 30 24 / 30%),0 0 0 1px rgb(255 232 199 / 40%)}
+.harper-reels .reels-card.is-highlighted{border-color:#fff2db;box-shadow:0 18px 34px rgb(36 30 24 / 24%)}
 .harper-reels .reels-card img,.harper-reels .reels-card video{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
+.harper-reels .reels-card img,.harper-reels .reels-card video{filter:grayscale(1) brightness(.84)!important;transition:filter .35s ease-in-out!important}
+.harper-reels .reels-card.is-highlighted img,.harper-reels .reels-card.is-highlighted video{filter:none!important}
 .harper-reels .reels-card-badge{display:none}
 .harper-reels .reels-card:focus-visible{outline:3px solid var(--orange);outline-offset:4px}
+.harper-reels .reels-actions{order:2;display:flex;align-items:center;justify-content:center;gap:18px;min-height:44px;color:#fff8ed;font:700 12px/1 var(--sans);text-transform:uppercase}
+.harper-reels .reels-actions a{color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding:8px 0}
+.harper-reels .reels-actions button{display:grid;place-items:center;width:44px;height:44px;border:1px solid rgb(255 248 237 / 65%);background:transparent;color:inherit;font:26px/1 var(--sans);cursor:pointer}
+.harper-reels .reels-actions :is(a,button):focus-visible{outline:3px solid #fff;outline-offset:3px}
 @media(max-width:700px){
-  .harper-reels .reels-stage{gap:20px}
+  .harper-grey-sequence .harper-reels{padding-top:40px;padding-bottom:38px}
+  .harper-reels .reels-stage{gap:16px}
+  body.reels-in-view .mobile-floating-book{display:none!important}
   .harper-reels .reels-center{width:100%;padding:0 18px}
   .harper-reels .reels-center h2{font-size:clamp(29px,8vw,39px)}
   .harper-reels .reels-card,.harper-reels .reels-card.is-highlighted{top:50%}

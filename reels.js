@@ -6,6 +6,7 @@
   const orbit = document.getElementById('reels-orbit');
   const center = document.getElementById('reels-center');
   const social = document.getElementById('reels-social');
+  const actions = stage.querySelector('.reels-actions');
   const empty = document.getElementById('reels-empty');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const phone = matchMedia('(max-width: 700px)');
@@ -100,11 +101,12 @@
     const sectionStyle = getComputedStyle(section);
     const verticalPadding = parseFloat(sectionStyle.paddingTop) + parseFloat(sectionStyle.paddingBottom);
     const stageGap = parseFloat(getComputedStyle(stage).rowGap) || 0;
-    const available = viewportHeight - navHeight - verticalPadding - center.getBoundingClientRect().height - stageGap - (mobile ? 22 : 30);
+    const actionHeight = actions?.getBoundingClientRect().height || 0;
+    const available = viewportHeight - navHeight - verticalPadding - center.getBoundingClientRect().height - stageGap * 2 - actionHeight - (mobile ? 18 : 24);
     const galleryHeight = Math.max(mobile ? 290 : 320, Math.min(available, mobile ? 530 : 650));
     const h = Math.max(250, galleryHeight - (mobile ? 28 : 38));
     const w = h * 9 / 16;
-    const spacing = w + (mobile ? 10 : 12);
+    const spacing = w * (mobile ? .83 : 1.13);
     geometry = {x:spacing,y:0,w,h,length:spacing*cards.length,points:[0],focal:0};
     orbit.style.setProperty('--gallery-height',`${galleryHeight}px`);
     render();
@@ -148,6 +150,7 @@
       link.setAttribute('aria-description', 'Press Enter to watch this Reel.');
       link.addEventListener('click', e => {
         if (performance.now() < suppressClickUntil) { e.preventDefault(); return; }
+        if (i !== featuredIndex) { e.preventDefault(); alignTo(i); return; }
         if (item.video && !e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) { e.preventDefault(); openVideo(item); }
       });
       link.addEventListener('focus', () => { if (!pointerActive) alignTo(i); });
@@ -170,22 +173,22 @@
       const depth=Math.abs(offset);
       if(depth<distance){distance=depth;nearest=i;}
       const x=offset*geometry.x;
-      const y=offset*(phone.matches?9:16)+Math.min(depth*depth,6)*(phone.matches?3:5);
-      const scale=Math.max(.88,1-depth*.045);
-      const visibility=Math.abs(x)<(orbit.clientWidth+geometry.w)/2?1:0;
+      const y=Math.min(depth*depth,5)*(phone.matches?5:11);
+      const scale=1-.2*Math.min(1,depth);
+      const visibility=depth<=(phone.matches?1.2:2.4)?1:0;
       card.style.width=`${geometry.w}px`;
       card.style.height=`${geometry.h}px`;
       card.style.setProperty('--card-width',`${geometry.w}px`);
       card.style.setProperty('--card-height',`${geometry.h}px`);
-      card.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(3)}px,${y.toFixed(3)}px,0) rotate(${(-offset*.8).toFixed(3)}deg) scale(${scale.toFixed(5)})`;
+      card.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(3)}px,${y.toFixed(3)}px,0) rotate(${(-offset*1.1).toFixed(3)}deg) scale(${scale.toFixed(5)})`;
       card.style.setProperty('--card-transform',card.style.transform);
       const orbitVisible=String(visibility>.08);
       if(card.dataset.orbitVisible!==orbitVisible){card.dataset.orbitVisible=orbitVisible;visibilityChanged=true;}
       card.style.setProperty('opacity',String(visibility),'important');
       card.style.pointerEvents=visibility?'auto':'none';
       card.style.zIndex=String(Math.round(100-depth*10));
-      card.style.setProperty('--reel-blur',`${Math.min(1.1,depth*.4).toFixed(2)}px`);
-      card.style.setProperty('--reel-saturation',String(Math.max(.35,1-depth*.28)));
+      card.style.setProperty('--reel-blur','0px');
+      card.style.setProperty('--reel-saturation','1');
       card.style.setProperty('--reel-brightness','1');
       card.tabIndex=visibility?0:-1;
     });
@@ -222,7 +225,7 @@
     }, {threshold:[0,.05]});
     cards.forEach(card => cardObserver.observe(card));
     setState('spinning');
-    const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)lastAdvance=performance.now();syncPlayback();},{threshold:0});observer.observe(section);
+    const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;document.body.classList.toggle('reels-in-view',visible);if(visible)lastAdvance=performance.now();syncPlayback();},{threshold:0});observer.observe(section);
     document.addEventListener('visibilitychange',()=>{last=performance.now();syncPlayback();});
     orbit.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')hover=true;});
     orbit.addEventListener('pointerleave',()=>{hover=false;});
@@ -247,6 +250,8 @@
       const index=(featuredIndex+(event.key==='ArrowRight'?1:-1)+cards.length)%cards.length;
       cards[index].focus({preventScroll:true});alignTo(index);
     });
+    document.getElementById('reels-prev')?.addEventListener('click',()=>alignTo((featuredIndex-1+cards.length)%cards.length));
+    document.getElementById('reels-next')?.addEventListener('click',()=>alignTo((featuredIndex+1)%cards.length));
     addEventListener('resize',measure);
     window.visualViewport?.addEventListener('resize',measure);
     reduced.addEventListener('change',()=>{manualPreview=false;if(reduced.matches&&stepAt){phase=stepTo;stepAt=0;}render();syncPlayback();});
