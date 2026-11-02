@@ -1,4 +1,6 @@
-/* Native-video adaptation of the CircularGallery bent horizontal layout. */
+/* Native-video adaptation of the FlexCarousel horizontal layout. */
+.harper-grey-sequence .harper-reels{height:auto!important;max-height:none!important}
+@media(min-width:701px){.harper-grey-sequence .harper-reels{padding-bottom:clamp(36px,4vw,56px)}}
 .harper-reels .reels-stage{
   display:flex!important;flex-direction:column;align-items:center;gap:clamp(26px,3vw,42px);
   width:100%;max-width:none;height:auto!important;min-height:0!important;max-height:none!important;
@@ -11,8 +13,10 @@
 .harper-reels .reels-center h2{margin:0;font-size:clamp(35px,3.5vw,55px);line-height:1.05}
 .harper-reels .reels-social{margin-top:15px}
 .harper-reels .reels-orbit{
-  position:relative!important;inset:auto!important;order:1;display:block;width:100%;
-  height:var(--gallery-height,680px)!important;margin:0;padding:0;overflow:hidden;
+  position:relative!important;inset:auto!important;order:1;display:block;
+  width:100vw!important;max-width:none!important;
+  height:var(--gallery-height,540px)!important;
+  margin:0!important;padding:0;overflow:hidden;
   transform:none!important;isolation:isolate;touch-action:pan-y;cursor:grab;
   user-select:none;-webkit-user-select:none;
 }
@@ -21,7 +25,7 @@
 .harper-reels .reels-orbit::before,.harper-reels .reels-orbit-spark,
 .harper-reels .reels-card-light{display:none!important;content:none!important}
 .harper-reels .reels-card,.harper-reels .reels-card.is-highlighted{
-  position:absolute;top:48%;left:50%;display:block;overflow:hidden;
+  position:absolute;top:50%;left:50%;display:block;overflow:hidden;
   width:var(--card-width)!important;height:var(--card-height)!important;
   aspect-ratio:9/16;border:1px solid rgb(255 248 237 / 65%);border-radius:0;
   background:#777;box-shadow:0 20px 36px rgb(36 30 24 / 24%);
@@ -36,6 +40,6 @@
   .harper-reels .reels-stage{gap:20px}
   .harper-reels .reels-center{width:100%;padding:0 18px}
   .harper-reels .reels-center h2{font-size:clamp(29px,8vw,39px)}
-  .harper-reels .reels-card,.harper-reels .reels-card.is-highlighted{top:47%}
+  .harper-reels .reels-card,.harper-reels .reels-card.is-highlighted{top:50%}
 }
 @media(prefers-reduced-motion:reduce){.harper-reels .reels-card{transition:none!important}}

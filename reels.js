@@ -1,4 +1,4 @@
-/* Moments orbit. Reel destinations and available covers: data/reels.json. */
+/* FlexCarousel-inspired layout with native video frames: data/reels.json. */
 (() => {
   const section = document.getElementById('moments');
   if (!section) return;
@@ -44,6 +44,7 @@
     stepFrom = phase;
     stepTo = phase + wrap(target - phase);
     stepAt = performance.now();
+    lastAdvance = stepAt;
     if (reduced.matches) { phase = stepTo; stepAt = 0; render(); }
   }
   function openVideo(item) {
@@ -66,7 +67,7 @@
     if (!reduced.matches) video.play().catch(()=>{});
   }
   let visible = false, hover = false, focused = false, dragging = false;
-  let phase = 0, last = 0, raf = 0, pointerX = 0, pointerStart = 0, pointerActive = false, suppressClickUntil = 0;
+  let phase = 0, last = 0, raf = 0, pointerX = 0, pointerStart = 0, pointerActive = false, suppressClickUntil = 0, lastAdvance = 0;
   let stepFrom = 0, stepTo = 0, stepAt = 0;
   let geometry = {x:0,y:0,w:0,h:0,length:1,points:[],focal:0};
   const wrap = value => ((value + .5) % 1 + 1) % 1 - .5;
@@ -90,16 +91,22 @@
       social.append(icon);
     }
   }
-  // Match CircularGallery's horizontal bend while preserving native 9:16 video frames.
+  // Fit the whole composition below the nav; keep every frame in portrait 9:16.
   function measure() {
     stage.setAttribute('aria-description', 'Drag or swipe to browse Reels. Use the left and right arrow keys to navigate.');
-    const box = orbit.getBoundingClientRect();
     const mobile = phone.matches;
-    const h = mobile ? Math.min(470, Math.max(350, box.width * 1.09)) : Math.min(560, Math.max(400, box.width * .39));
+    const navHeight = document.getElementById('site-nav')?.getBoundingClientRect().height || 0;
+    const viewportHeight = window.visualViewport?.height || innerHeight;
+    const sectionStyle = getComputedStyle(section);
+    const verticalPadding = parseFloat(sectionStyle.paddingTop) + parseFloat(sectionStyle.paddingBottom);
+    const stageGap = parseFloat(getComputedStyle(stage).rowGap) || 0;
+    const available = viewportHeight - navHeight - verticalPadding - center.getBoundingClientRect().height - stageGap - (mobile ? 22 : 30);
+    const galleryHeight = Math.max(mobile ? 290 : 320, Math.min(available, mobile ? 530 : 650));
+    const h = Math.max(250, galleryHeight - (mobile ? 28 : 38));
     const w = h * 9 / 16;
-    const spacing = w * (mobile ? .98 : 1.10);
+    const spacing = w + (mobile ? 10 : 12);
     geometry = {x:spacing,y:0,w,h,length:spacing*cards.length,points:[0],focal:0};
-    orbit.style.setProperty('--gallery-height',`${h + (mobile ? 100 : 125)}px`);
+    orbit.style.setProperty('--gallery-height',`${galleryHeight}px`);
     render();
   }
   function renderCards() {
@@ -163,22 +170,22 @@
       const depth=Math.abs(offset);
       if(depth<distance){distance=depth;nearest=i;}
       const x=offset*geometry.x;
-      const y=Math.min(depth*depth,6)*(phone.matches?17:24);
-      const scale=Math.max(.77,1-depth*.085);
-      const visibility=depth<(phone.matches?1.7:2.7)?1:0;
+      const y=offset*(phone.matches?9:16)+Math.min(depth*depth,6)*(phone.matches?3:5);
+      const scale=Math.max(.88,1-depth*.045);
+      const visibility=Math.abs(x)<(orbit.clientWidth+geometry.w)/2?1:0;
       card.style.width=`${geometry.w}px`;
       card.style.height=`${geometry.h}px`;
       card.style.setProperty('--card-width',`${geometry.w}px`);
       card.style.setProperty('--card-height',`${geometry.h}px`);
-      card.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(3)}px,${y.toFixed(3)}px,0) rotate(${(-offset*(phone.matches?2.2:3)).toFixed(3)}deg) scale(${scale.toFixed(5)})`;
+      card.style.transform=`translate(-50%,-50%) translate3d(${x.toFixed(3)}px,${y.toFixed(3)}px,0) rotate(${(-offset*.8).toFixed(3)}deg) scale(${scale.toFixed(5)})`;
       card.style.setProperty('--card-transform',card.style.transform);
       const orbitVisible=String(visibility>.08);
       if(card.dataset.orbitVisible!==orbitVisible){card.dataset.orbitVisible=orbitVisible;visibilityChanged=true;}
       card.style.setProperty('opacity',String(visibility),'important');
       card.style.pointerEvents=visibility?'auto':'none';
       card.style.zIndex=String(Math.round(100-depth*10));
-      card.style.setProperty('--reel-blur',`${Math.min(1.5,depth*.55).toFixed(2)}px`);
-      card.style.setProperty('--reel-saturation',String(Math.max(.25,1-depth*.35)));
+      card.style.setProperty('--reel-blur',`${Math.min(1.1,depth*.4).toFixed(2)}px`);
+      card.style.setProperty('--reel-saturation',String(Math.max(.35,1-depth*.28)));
       card.style.setProperty('--reel-brightness','1');
       card.tabIndex=visibility?0:-1;
     });
@@ -194,8 +201,8 @@
       const t=reduced.matches?1:ease((now-stepAt)/650);
       phase=stepFrom+(stepTo-stepFrom)*t;
       if(t>=1)stepAt=0;
-    } else if(visible&&!document.hidden&&!hover&&!focused&&!pointerActive&&!player?.open&&!reduced.matches){
-      phase += .05 * dt / 1000 / cards.length;
+    } else if(visible&&!document.hidden&&!hover&&!focused&&!pointerActive&&!player?.open&&!reduced.matches&&now-lastAdvance>3500){
+      alignTo((featuredIndex+1)%cards.length);
     }
     // Phase wraps continuously: there is no reset frame or positional jump.
     phase=((phase%1)+1)%1;
@@ -207,13 +214,15 @@
     renderSocial(data.profiles);
     if (!items.length) {empty.hidden=false;setState('empty');return;}
     renderCards();
+    // Refresh the existing scroll pin after async Reel data determines the final section height.
+    requestAnimationFrame(() => window.dispatchEvent(new Event('resize')));
     const cardObserver = new IntersectionObserver(entries => {
       entries.forEach(entry => { entry.target.dataset.inView = String(entry.isIntersecting && entry.intersectionRatio > .05); });
       syncPlayback();
     }, {threshold:[0,.05]});
     cards.forEach(card => cardObserver.observe(card));
     setState('spinning');
-    const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;syncPlayback();},{threshold:0});observer.observe(section);
+    const observer=new IntersectionObserver(entries=>{visible=entries[0].isIntersecting;if(visible)lastAdvance=performance.now();syncPlayback();},{threshold:0});observer.observe(section);
     document.addEventListener('visibilitychange',()=>{last=performance.now();syncPlayback();});
     orbit.addEventListener('pointerenter',event=>{if(event.pointerType==='mouse')hover=true;});
     orbit.addEventListener('pointerleave',()=>{hover=false;});
@@ -221,7 +230,7 @@
     orbit.addEventListener('focusout',()=>queueMicrotask(()=>{focused=orbit.contains(document.activeElement);if(!focused)manualPreview=false;syncPlayback();}));
     orbit.addEventListener('pointerdown',event=>{
       if(event.button!==0)return;
-      pointerActive=true;stepAt=0;pointerX=pointerStart=event.clientX;
+      pointerActive=true;stepAt=0;lastAdvance=performance.now();pointerX=pointerStart=event.clientX;
     });
     orbit.addEventListener('pointermove',event=>{
       if(!pointerActive)return;
@@ -230,7 +239,7 @@
       phase+=(event.clientX-pointerX)/geometry.length;
       pointerX=event.clientX;render();
     });
-    const finish=()=>{if(dragging)suppressClickUntil=performance.now()+400;dragging=false;pointerActive=false;};
+    const finish=()=>{if(dragging){suppressClickUntil=performance.now()+400;alignTo(featuredIndex);}dragging=false;pointerActive=false;};
     orbit.addEventListener('pointerup',finish);orbit.addEventListener('pointercancel',finish);orbit.addEventListener('lostpointercapture',finish);
     orbit.addEventListener('keydown',event=>{
       if(event.key!=='ArrowLeft'&&event.key!=='ArrowRight')return;
@@ -239,6 +248,7 @@
       cards[index].focus({preventScroll:true});alignTo(index);
     });
     addEventListener('resize',measure);
+    window.visualViewport?.addEventListener('resize',measure);
     reduced.addEventListener('change',()=>{manualPreview=false;if(reduced.matches&&stepAt){phase=stepTo;stepAt=0;}render();syncPlayback();});
     last=performance.now();raf=requestAnimationFrame(frame);
   }
