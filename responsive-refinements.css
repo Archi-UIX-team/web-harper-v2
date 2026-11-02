@@ -847,6 +847,19 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
 .journal-editorial .journal-eyebrow .scroll-blur-line{display:inline-flex;align-items:center;gap:2px;padding-inline:0!important}
 .journal-editorial .journal-eyebrow .scroll-blur-word{padding-inline:0!important}
 
+/* Carry the Harper-tinted plaster behind the editorial frame without extending either section. */
+.offers,.offers::before,.journal-paper-area::before{
+ background-color:var(--orange);
+ background-image:linear-gradient(color-mix(in srgb,var(--orange) 60%,transparent),color-mix(in srgb,var(--orange) 60%,transparent)),url('./assets/offers-mottled-orange-hd.webp');
+ background-size:cover,cover;
+ background-position:center;
+ background-repeat:no-repeat;
+}
+.journal-paper-area::before{display:block;inset:0 0 auto;height:calc(50% - 8px);z-index:0;opacity:1;pointer-events:none}
+.journal-paper-area>.journal{z-index:1}
+@media(min-width:961px) and (min-height:821px) and (prefers-reduced-motion:no-preference){.journal-paper-area::before{height:calc(50% - 8px - min(3vh,85px))}}
+@media(max-width:700px){.journal-paper-area::before{height:calc(50% - 12px)}}
+
 /* Focused background polish; preserve hotel layers and booking geometry. */
 .hero-contour #hero-title{color:var(--gray)!important}
 .hero-contour .hero-atmosphere{background:linear-gradient(180deg,#f8f4ed 0%,#f8f4ed 42%,color-mix(in srgb,var(--orange) 8%,#f8f4ed) 60%,color-mix(in srgb,var(--orange) 25%,#f8f4ed) 78%,color-mix(in srgb,var(--orange) 52%,#f8f4ed) 100%)}
