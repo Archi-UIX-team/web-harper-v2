@@ -89,14 +89,14 @@
 #hotels.hero-cloud-receiver>.city-map{
   top:70px;left:50%;width:min(120vw,2000px);height:auto;max-width:none;
   transform:translateX(-50%);object-fit:contain;pointer-events:none;
-  filter:brightness(0);opacity:.055!important;
+  filter:none;
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 25%,transparent 42%,transparent 58%,#000 75%,#000 88%,transparent),linear-gradient(180deg,transparent 3%,#000 23%,#000 35%,transparent 48%);
   mask-image:linear-gradient(90deg,transparent,#000 12%,#000 25%,transparent 42%,transparent 58%,#000 75%,#000 88%,transparent),linear-gradient(180deg,transparent 3%,#000 23%,#000 35%,transparent 48%);
   -webkit-mask-composite:source-in;mask-composite:intersect;
 }
 @media(max-width:700px){
   #hotels.hero-cloud-receiver>.city-map{
-    top:70px;width:160vw;
+    top:70px;width:160vw;opacity:.55!important;
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,transparent 35%,transparent 65%,#000 85%,transparent),linear-gradient(180deg,transparent 25%,#000 50%,transparent 100%);
     mask-image:linear-gradient(90deg,transparent,#000 15%,transparent 35%,transparent 65%,#000 85%,transparent),linear-gradient(180deg,transparent 25%,#000 50%,transparent 100%);
   }
