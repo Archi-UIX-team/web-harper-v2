@@ -85,19 +85,23 @@
 #booking-sheet .booking-field>span,#booking-sheet .booking-popover label{color:var(--orange)}
 #booking-sheet .booking-field>strong,#destination-search::placeholder{color:var(--gray);opacity:1}
 
-/* One continuous, decorative map: empty center, soft side fragments and no cartographic claims. */
+/* Keep the dotted map fragments at the viewport edges, clear of the city content. */
 #hotels.hero-cloud-receiver>.city-map{
-  top:70px;left:50%;width:min(86vw,1080px);height:auto;max-width:none;
-  transform:translateX(-50%);object-fit:contain;pointer-events:none;
+  top:70px;width:min(29vw,420px);height:auto;max-width:none;
+  transform:none;object-fit:contain;pointer-events:none;
   filter:none;
-  -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 25%,transparent 42%,transparent 58%,#000 75%,#000 88%,transparent),linear-gradient(180deg,transparent 3%,#000 23%,#000 35%,transparent 48%);
-  mask-image:linear-gradient(90deg,transparent,#000 12%,#000 25%,transparent 42%,transparent 58%,#000 75%,#000 88%,transparent),linear-gradient(180deg,transparent 3%,#000 23%,#000 35%,transparent 48%);
+  -webkit-mask-image:linear-gradient(180deg,transparent 3%,#000 20%,#000 35%,transparent 50%);
+  mask-image:linear-gradient(180deg,transparent 3%,#000 20%,#000 35%,transparent 50%);
   -webkit-mask-composite:source-in;mask-composite:intersect;
 }
+#hotels.hero-cloud-receiver>.city-map--left{left:clamp(-110px,-6vw,-55px)}
+#hotels.hero-cloud-receiver>.city-map--right{left:auto;right:clamp(-110px,-6vw,-55px)}
 @media(max-width:700px){
   #hotels.hero-cloud-receiver>.city-map{
-    top:70px;width:min(112vw,520px);opacity:.55!important;
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 15%,transparent 35%,transparent 65%,#000 85%,transparent),linear-gradient(180deg,transparent 25%,#000 50%,transparent 100%);
-    mask-image:linear-gradient(90deg,transparent,#000 15%,transparent 35%,transparent 65%,#000 85%,transparent),linear-gradient(180deg,transparent 25%,#000 50%,transparent 100%);
+    top:70px;width:min(65vw,260px);opacity:.55!important;
+    -webkit-mask-image:linear-gradient(180deg,transparent 5%,#000 24%,#000 43%,transparent 70%);
+    mask-image:linear-gradient(180deg,transparent 5%,#000 24%,#000 43%,transparent 70%);
   }
+  #hotels.hero-cloud-receiver>.city-map--left{left:-42vw}
+  #hotels.hero-cloud-receiver>.city-map--right{left:auto;right:-42vw}
 }
