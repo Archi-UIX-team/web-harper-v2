@@ -300,8 +300,12 @@
   addEventListener('harper:book-from-sidebar',showDestinationFromSidebar);
   const floatingBook=document.getElementById('mobile-book-now');
   floatingBook.addEventListener('click',showDestinationFromSidebar);
-  // Keep the sticky action available after the hero form leaves view.
-  new IntersectionObserver(entries=>{floatingBook.hidden=entries[0].isIntersecting;},{threshold:0}).observe(heroBooking);
+  // Keep the sticky action between the hero and footer, then restore it on scroll-up.
+  const footer=document.getElementById('footer');
+  let heroBookingVisible=true, footerVisible=false;
+  const syncFloatingBook=()=>{floatingBook.hidden=heroBookingVisible||footerVisible;};
+  new IntersectionObserver(entries=>{heroBookingVisible=entries[0].isIntersecting;syncFloatingBook();},{threshold:0}).observe(heroBooking);
+  if(footer)new IntersectionObserver(entries=>{footerVisible=entries[0].isIntersecting;syncFloatingBook();},{threshold:0}).observe(footer);
   document.addEventListener('click',event=>{
     const button=event.target.closest('[data-booking-open]');
     if(!button)return;

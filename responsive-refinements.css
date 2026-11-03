@@ -988,3 +988,9 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
  .hero-contour .rustic-orbit__card:not(.is-featured) .rustic-orbit__photo::after{right:6px;width:6px}
  .hero-contour .rustic-orbit__card.is-left-preview:not(.is-featured) .rustic-orbit__photo::after{left:6px;right:auto}
 }
+
+/* Final mobile hero proportions; placed last so earlier responsive rules cannot shrink them. */
+@media(max-width:700px){
+  html body .hero-contour #hero-title{font-size:clamp(32px,9vw,38px)!important;line-height:1.02!important}
+  html body .hero-contour .hero-orbit{height:330px!important;margin-top:18px!important}
+}

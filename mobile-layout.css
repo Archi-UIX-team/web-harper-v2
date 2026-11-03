@@ -119,6 +119,17 @@
   .hotels .prism-card img{transition:filter .28s ease,transform .28s ease}
 }
 @media(max-width:360px){.hero-booking-field strong{font-size:11px}}
+
+/* Mobile polish: clearer hero hierarchy, a shorter orange tail, and crisp section copy. */
+@media(max-width:700px){
+  .hero.hero-contour,.hero.hero-orbit-stage{min-height:0!important;height:auto!important;padding-bottom:14px!important;clip-path:inset(0)!important}
+  .hero-contour .hero-booking,.hero-orbit-stage .hero-booking{margin-top:18px;min-height:0!important}
+  .hero-contour .hero-atmosphere{bottom:0!important}
+  main .scroll-blur-word,.footer .scroll-blur-word{opacity:1!important;filter:none!important;transform:none!important;color:inherit!important}
+  main .animated-content-item,.footer .animated-content-item{opacity:1!important;filter:none!important;translate:none!important}
+  .footer{padding-bottom:0!important}
+}
+
 /* Manager revisions: swipeable city pages, compact editorial copy, centered footer. */
 @media(max-width:700px){
   .hero-orbit-stage .hero-rattan-left{width:140px;height:290px;left:-70px;top:23%;opacity:.34}
