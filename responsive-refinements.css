@@ -847,6 +847,58 @@ h1,h2,h3,h4,h5,h6,.hero-contour #hero-title,.hero-contour #hero-title span{font-
 .journal-editorial .journal-eyebrow .scroll-blur-line{display:inline-flex;align-items:center;gap:2px;padding-inline:0!important}
 .journal-editorial .journal-eyebrow .scroll-blur-word{padding-inline:0!important}
 
+/* Hero booking fields open compact anchored menus instead of the booking dialog. */
+.hero-contour .hero-booking{overflow:visible}
+.hero-booking-popover{
+ position:absolute!important;z-index:25;
+ left:var(--hero-popover-left,0);bottom:calc(100% + 12px);
+ width:var(--hero-popover-width,408px);max-height:min(370px,calc(100svh - var(--top-nav-height) - 120px));
+ margin:0;padding:16px;background:#f2f3f3;border:0;box-shadow:0 22px 56px rgb(64 10 37 / 22%);
+ overflow:auto;overscroll-behavior:contain;color:var(--ink)
+}
+.hero-booking-popover.is-destination{display:flex;flex-direction:column;height:min(370px,calc(100svh - var(--top-nav-height) - 120px));overflow:hidden}
+.hero-booking-popover .destination-search-header{background:#f2f3f3;padding:0 0 12px}
+.hero-booking-popover .destination-search-header h3{margin:0 0 14px;font:400 20px/1.2 var(--serif)}
+.hero-booking-popover .destination-search-header label{display:block;margin-bottom:7px;font:400 12px/1.3 var(--sans);color:var(--gray)}
+.hero-booking-popover .destination-search-header input{margin:0;padding:11px 12px;border:1px solid #aaabad;background:#fff}
+.hero-booking-popover .destination-options{min-height:0;overflow:auto;display:grid;grid-template-columns:1fr;gap:1px;padding-top:4px}
+.hero-booking-popover .destination-options button{min-height:40px;padding:9px 12px;text-align:left;border-bottom:1px solid #d7d7d5;background:transparent}
+.hero-booking-popover .destination-options button:is(:hover,:focus-visible){background:#fff3e6;color:var(--ink)}
+.hero-booking-popover.is-calendar{width:var(--hero-popover-width,760px);max-height:none;padding:0;overflow:visible;border:1px solid #f5b168;background:#fff}
+.hero-booking-popover .calendar-months{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:5px 12px 12px}
+.hero-booking-popover .calendar-summary{background:#f2f3f3}
+.hero-booking-popover .calendar-footer{background:#f2f3f3}
+.hero-booking-popover .calendar-apply{flex:none;min-height:38px;padding:8px 14px;background:var(--orange);color:#000;font:700 11px var(--sans)}
+.hero-booking-popover .guest-rooms-total{padding-bottom:12px}
+.hero-booking-popover .guest-room-list{gap:8px;padding-top:12px}
+.hero-booking-popover .guest-room{display:grid;grid-template-columns:90px minmax(0,1fr);align-items:center;gap:12px;padding:12px;border:1px solid #f08b1d80;background:#f2f3f3}
+.hero-booking-popover .guest-room h3{margin:0;font:400 14px/1.3 var(--sans)}
+.hero-booking-popover .guest-room-counters{display:grid;gap:9px}
+.hero-booking-popover .guest-room-counter{display:flex;align-items:center;justify-content:space-between;gap:10px;color:var(--gray);font:400 13px var(--sans)}
+.hero-booking-popover .guest-stepper{display:flex;align-items:center;gap:4px}
+.hero-booking-popover .guest-stepper output{min-width:25px;text-align:center;font:700 15px var(--sans)}
+.hero-booking-popover .guest-stepper button{display:grid;place-items:center;width:30px;min-height:30px;padding:0;border:1px solid #f5b168;background:transparent;font:400 20px/1 var(--sans)}
+.hero-booking-popover .guest-rooms-total .guest-stepper button{background:var(--orange);border-color:var(--orange);color:#fff}
+.hero-booking-popover .guest-stepper button:disabled{opacity:.35}
+.hero-booking-field[aria-expanded=true]{background:#f08b1d0d;box-shadow:inset 0 -2px var(--orange)}
+@media(max-width:700px){
+ .hero-booking-popover{position:absolute!important;bottom:calc(100% + 8px);max-height:min(330px,68svh);padding:12px}
+ .hero-booking-popover.is-destination{height:min(330px,68svh)}
+ .hero-booking-popover.is-calendar{max-height:none;padding:0}
+ .hero-booking-popover .calendar-months{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px;padding:4px 6px 8px}
+ .hero-booking-popover .calendar-summary{padding:7px 8px}
+ .hero-booking-popover .calendar-summary strong{font-size:9px}
+ .hero-booking-popover .calendar-summary>span{font-size:9px}
+ .hero-booking-popover .is-calendar .calendar-header h3,.hero-booking-popover .calendar-header h3{font-size:11px}
+ .hero-booking-popover .calendar-grid>span{font-size:8px;padding-bottom:4px}
+ .hero-booking-popover .calendar-grid button{min-height:28px;font-size:11px;padding:1px}
+ .hero-booking-popover .calendar-grid button small{font-size:6px}
+ .hero-booking-popover .calendar-footer{min-height:38px;padding:6px 8px;font-size:9px}
+ .hero-booking-popover .guest-room{grid-template-columns:72px minmax(0,1fr);gap:8px;padding:10px}
+ .hero-booking-popover .guest-room-counter{font-size:11px}
+ .hero-booking-popover .guest-stepper button{width:28px;min-height:28px}
+}
+
 /* Carry the Harper-tinted plaster behind the editorial frame without extending either section. */
 .offers,.offers::before,.journal-paper-area::before{
  background-color:var(--orange);
